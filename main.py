@@ -1,271 +1,280 @@
 """
-Sistema de Memória Contínua e Reflexão Autônoma
+Sistema de Memória Contínua e Reflexão Autônoma - Fases 1-5
 
-Arquivo principal para iniciar o sistema, implementando a Fase 4
-do projeto com ciclo de pensamento contínuo e aprendizado autônomo.
+Este sistema implementa:
+- Fase 1: Memória e Armazenamento
+- Fase 2: Reflexão e Metacognição
+- Fase 3: Sistema Multi-agentes
+- Fase 4: Ciclo de Pensamento Contínuo e Aprendizado Autônomo
+- Fase 5: Adaptação e Experimentação Autônoma
+
+O sistema funciona como uma memória contínua que não apenas armazena
+informações, mas também as processa, as sintetiza e evolui seu próprio
+funcionamento através de experimentação e adaptação autônoma.
 """
+
 import os
-import sys
-import asyncio
 import logging
-import signal
+import asyncio
+import argparse
+import json
 from datetime import datetime
+from pathlib import Path
 
-# Configuração de logging
-from core.config import LOG_CONFIG
-
-logging.basicConfig(
-    level=getattr(logging, LOG_CONFIG["nivel"]),
-    format=LOG_CONFIG["formato"],
-    handlers=[
-        logging.FileHandler(LOG_CONFIG["arquivo"]),
-        logging.StreamHandler() if LOG_CONFIG["console"] else logging.NullHandler()
-    ]
-)
-
-logger = logging.getLogger("sistema_memoria")
-
-# Importa os módulos principais
+# Importação dos módulos do sistema
 from core.persona import Persona
 from core.alma import Alma
 from core.learning import GerenciadorAprendizado
-from core.config import ALMA_CONFIG
+from core.adaptive_learning import AprendizadoAdaptativo
 
-def setup_environment():
-    """Configura o ambiente para a execução do sistema."""
-    # Adiciona diretórios ao path
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    sys.path.append(current_dir)
-    logger.info(f"Adicionado ao path: {current_dir}")
+# Configuração de logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("sistema.log"),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
+async def setup_environment():
+    """Configura o ambiente de execução, garantindo que diretórios necessários existam."""
+    diretorios = ['data', 'logs', 'data/sinteses', 'data/adaptive_learning']
     
-    # Assegura que o diretório core existe
-    os.makedirs("core", exist_ok=True)
-    os.makedirs("core/agentes", exist_ok=True)
-    logger.info("Estrutura de diretórios verificada")
+    for diretorio in diretorios:
+        os.makedirs(diretorio, exist_ok=True)
+    
+    logger.info("Ambiente configurado com sucesso")
 
-async def processar_comandos(persona, alma, gerenciador_aprendizado):
+async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=None, adaptativo=None):
     """Processa comandos do usuário.
     
     Args:
+        comando: Comando a ser processado
         persona: Instância da classe Persona
         alma: Instância da classe Alma
-        gerenciador_aprendizado: Instância do GerenciadorAprendizado
+        gerenciador_aprendizado: Instância de GerenciadorAprendizado (opcional)
+        adaptativo: Instância de AprendizadoAdaptativo (opcional)
+        
+    Returns:
+        str: Resposta ao comando
     """
-    while True:
-        try:
-            comando = await asyncio.to_thread(
-                input, "\nComando (digite 'ajuda' para ver os comandos disponíveis): "
-            )
-            
-            match comando.lower().strip():
-                case 'ajuda':
-                    print("\nComandos disponíveis:")
-                    print("  ajuda       - Mostra esta mensagem")
-                    print("  sair        - Encerra o sistema")
-                    print("  adicionar   - Adiciona uma nova informação")
-                    print("  sintese     - Gera uma síntese de memórias existentes")
-                    print("  reflexao    - Força um ciclo de reflexão")
-                    print("  metacog     - Força um ciclo de metacognição")
-                    print("  emocional   - Ativa o agente emocional")
-                    print("  consistencia- Ativa o agente de consistência")
-                    print("  padroes     - Ativa o agente de padrões")
-                    print("  otimizar    - Força um ciclo de otimização de aprendizado")
-                    print("  memorias    - Lista todas as memórias armazenadas")
-                    print("  stats       - Mostra estatísticas do sistema")
-                    
-                case 'sair':
-                    logger.info("Comando de saída recebido")
-                    return
-                    
-                case 'adicionar':
-                    info = await asyncio.to_thread(
-                        input, "Digite a nova informação: "
-                    )
-                    persona.receber_informacao(info)
-                    
-                case 'sintese':
-                    sintese = persona.gerar_sintese()
-                    if sintese:
-                        print(f"Síntese gerada: {sintese}")
-                    else:
-                        print("Não foi possível gerar uma síntese")
-                        
-                case 'reflexao':
-                    await alma.ativar_agente_reflexao()
-                    
-                case 'metacog':
-                    await alma.ativar_agente_metacognicao()
-                    
-                case 'emocional':
-                    await alma.ativar_agente_emocional()
-                    
-                case 'consistencia':
-                    await alma.ativar_agente_consistencia()
-                    
-                case 'padroes':
-                    await alma.ativar_agente_padrao()
-                    
-                case 'otimizar':
-                    await gerenciador_aprendizado.otimizar_processo()
-                    
-                case 'memorias':
-                    dados = persona._carregar_memorias()
-                    print("\nMemórias armazenadas:")
-                    
-                    if not dados["memorias"]:
-                        print("  Nenhuma memória encontrada")
-                    else:
-                        for memoria in dados["memorias"]:
-                            print(f"  #{memoria['id']} ({memoria.get('origem', 'desconhecida')}): {memoria['conteudo']}")
-                            
-                            # Mostra avaliação se existir
-                            if 'avaliacao' in memoria:
-                                print(f"    Qualidade: {memoria['avaliacao']['qualidade']}/10")
-                                
-                            # Mostra contexto emocional se existir
-                            if 'contexto_emocional' in memoria:
-                                print(f"    Emoção: {memoria['contexto_emocional']['emocao']} (intensidade: {memoria['contexto_emocional']['intensidade']})")
-                                
-                            # Mostra consistência se existir
-                            if 'consistencia' in memoria:
-                                print(f"    Inconsistente com: {memoria['consistencia']['inconsistente_com']}")
-                                
-                            # Mostra padrões se existirem
-                            if 'padroes' in memoria:
-                                print(f"    Temas: {', '.join(memoria['padroes']['temas_detectados'])}")
-                    
-                case 'stats':
-                    dados = persona._carregar_memorias()
-                    print("\n=== Estatísticas do Sistema ===")
-                    print(f"Total de memórias: {len(dados['memorias'])}")
-                    print(f"Reflexões realizadas: {alma.reflexoes_realizadas}")
-                    print(f"Metacognições realizadas: {alma.metacognicoes_realizadas}")
-                    
-                    # Estatísticas dos agentes especializados
-                    print(f"Processamentos emocionais: {alma.agente_emocional.processamentos}")
-                    print(f"Inconsistências detectadas: {alma.agente_consistencia.inconsistencias_detectadas}")
-                    print(f"Padrões identificados: {len(alma.agente_padrao.padroes_detectados)}")
-                    
-                    # Estatísticas de aprendizado
-                    print(f"Ciclos de otimização: {gerenciador_aprendizado.ciclos_realizados}")
-                    if gerenciador_aprendizado.estatisticas["total_avaliacoes"] > 0:
-                        print(f"Qualidade média das memórias: {gerenciador_aprendizado.estatisticas['qualidade_media']:.2f}/10")
-                    
-                    print(f"Pesos dos agentes: {gerenciador_aprendizado.pesos_agentes}")
-                    
-                    # Conta tipos de origem
-                    origens = {}
-                    for memoria in dados["memorias"]:
-                        origem = memoria.get("origem", "desconhecida")
-                        origens[origem] = origens.get(origem, 0) + 1
-                    
-                    print("\nTipos de memória:")
-                    for origem, contagem in origens.items():
-                        print(f"  {origem}: {contagem}")
-                        
-                    # Conta memórias com cada tipo de processamento
-                    emocional = sum(1 for m in dados["memorias"] if "contexto_emocional" in m)
-                    consistencia = sum(1 for m in dados["memorias"] if "consistencia" in m)
-                    padroes = sum(1 for m in dados["memorias"] if "padroes" in m)
-                    
-                    print("\nMemórias processadas:")
-                    print(f"  Com contexto emocional: {emocional}")
-                    print(f"  Com análise de consistência: {consistencia}")
-                    print(f"  Com padrões detectados: {padroes}")
-                    
-                    # Áreas de foco atuais
-                    areas_foco = gerenciador_aprendizado._identificar_areas_foco()
-                    if areas_foco:
-                        print("\nÁreas de foco atuais:")
-                        for area in areas_foco:
-                            print(f"  {area}")
-                    
-                    print("============================\n")
-                    
-                case _:
-                    if comando.strip():
-                        print(f"Comando desconhecido: '{comando}'")
-            
-        except asyncio.CancelledError:
-            logger.info("Processamento de comandos interrompido")
-            break
-        except Exception as e:
-            logger.error(f"Erro ao processar comando: {str(e)}")
+    partes = comando.lower().split()
+    
+    if partes[0] == "ajuda":
+        return """
+        Comandos disponíveis:
+        - ajuda: Mostra esta mensagem
+        - armazenar [mensagem]: Armazena uma nova memória
+        - listar [n]: Lista as últimas n memórias (padrão: 5)
+        - buscar [termo]: Busca memórias contendo o termo
+        - refletir: Executa um ciclo de reflexão
+        - metacognicao: Ativa o agente de metacognição
+        - emocional: Ativa o agente emocional
+        - consistencia: Ativa o agente de consistência
+        - padroes: Ativa o agente de identificação de padrões
+        - aprendizado: Informações sobre o aprendizado atual
+        - otimizar: Otimiza o processo de aprendizado
+        - estatisticas: Mostra estatísticas do aprendizado
+        - adaptar [intervalo]: Inicia ciclo adaptativo (intervalo em segundos)
+        - experimentos: Lista experimentos ativos
+        - metricas: Mostra métricas atuais do sistema
+        - estrategias: Lista estratégias efetivas aprendidas
+        - sair: Encerra o programa
+        """
+    
+    elif partes[0] == "armazenar" and len(partes) > 1:
+        conteudo = " ".join(partes[1:])
+        resultado = persona.adicionar_memoria(conteudo)
+        return f"Memória armazenada com ID: {resultado}"
+    
+    elif partes[0] == "listar":
+        n = 5  # padrão
+        if len(partes) > 1 and partes[1].isdigit():
+            n = int(partes[1])
+        
+        memorias = persona.listar_memorias(n)
+        resultado = ""
+        for memoria in memorias:
+            resultado += f"ID {memoria['id']}: {memoria['conteudo']}\n"
+        
+        return resultado if resultado else "Nenhuma memória encontrada."
+    
+    elif partes[0] == "buscar" and len(partes) > 1:
+        termo = " ".join(partes[1:])
+        memorias = persona.buscar_memorias(termo)
+        
+        resultado = ""
+        for memoria in memorias:
+            resultado += f"ID {memoria['id']}: {memoria['conteudo']}\n"
+        
+        return resultado if resultado else f"Nenhuma memória encontrada com o termo '{termo}'."
+    
+    elif partes[0] == "refletir":
+        await alma.ciclo_reflexao()
+        return "Ciclo de reflexão concluído."
+    
+    elif partes[0] == "metacognicao":
+        await alma.ativar_agente_metacognicao()
+        return "Agente de metacognição ativado."
+    
+    elif partes[0] == "emocional":
+        await alma.ativar_agente_emocional()
+        return "Agente emocional ativado."
+    
+    elif partes[0] == "consistencia":
+        await alma.ativar_agente_consistencia()
+        return "Agente de consistência ativado."
+    
+    elif partes[0] == "padroes":
+        await alma.ativar_agente_padroes()
+        return "Agente de identificação de padrões ativado."
+    
+    elif partes[0] == "aprendizado" and gerenciador_aprendizado:
+        return gerenciador_aprendizado.status_aprendizado()
+    
+    elif partes[0] == "otimizar" and gerenciador_aprendizado:
+        await gerenciador_aprendizado.otimizar_aprendizado()
+        return "Processo de aprendizado otimizado."
+    
+    elif partes[0] == "estatisticas" and gerenciador_aprendizado:
+        return gerenciador_aprendizado.mostrar_estatisticas()
+    
+    elif partes[0] == "adaptar" and adaptativo:
+        intervalo = 600  # Padrão: 10 minutos
+        if len(partes) > 1 and partes[1].isdigit():
+            intervalo = int(partes[1])
+        
+        # Inicia o ciclo adaptativo em background
+        asyncio.create_task(adaptativo.iniciar_ciclo_adaptativo(intervalo))
+        return f"Ciclo de adaptação iniciado com intervalo de {intervalo} segundos."
+    
+    elif partes[0] == "experimentos" and adaptativo:
+        if not adaptativo.experimentos_ativos:
+            return "Nenhum experimento ativo no momento."
+        
+        resultado = "Experimentos ativos:\n"
+        for exp_id, exp in adaptativo.experimentos_ativos.items():
+            resultado += f"- {exp_id}: {exp['descricao']} (ciclo {exp['ciclos_decorridos']}/{exp['ciclos_planejados']})\n"
+        return resultado
+    
+    elif partes[0] == "metricas" and adaptativo:
+        # Executa análise sob demanda
+        metricas = await adaptativo._analisar_metricas_sistema()
+        
+        if not metricas:
+            return "Nenhuma métrica disponível ainda."
+        
+        resultado = "Métricas atuais do sistema:\n"
+        for chave, valor in metricas.items():
+            if chave != "timestamp" and chave != "eficiencia_agentes":
+                resultado += f"- {chave}: {valor}\n"
+        
+        if "eficiencia_agentes" in metricas:
+            resultado += "\nEficiência dos agentes:\n"
+            for agente, valor in metricas["eficiencia_agentes"].items():
+                resultado += f"- {agente}: {valor}\n"
+        
+        return resultado
+    
+    elif partes[0] == "sair":
+        return "sair"
+    
+    else:
+        return "Comando não reconhecido. Digite 'ajuda' para ver os comandos disponíveis."
 
 async def main_async():
-    """Função principal assíncrona do sistema."""
-    try:
-        print("Iniciando Sistema de Memória Contínua e Reflexão Autônoma")
-        setup_environment()
-        
-        # Inicializa os componentes do sistema
-        persona = Persona()
-        alma = Alma(persona)
-        gerenciador_aprendizado = GerenciadorAprendizado(persona, alma)
-        
-        # Configura referência circular
-        alma.configurar_gerenciador_aprendizado(gerenciador_aprendizado)
-        
-        # Carregar algumas informações iniciais
-        exemplos = [
-            "Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
-            "A cognição adaptativa permite evolução constante do conhecimento.",
-            "Reflexão e metacognição são processos que melhoram o aprendizado."
-        ]
-        
-        print("\nCarregando informações iniciais...")
-        for exemplo in exemplos:
-            persona.receber_informacao(exemplo)
-            await asyncio.sleep(0.5)
-        
-        print("\nIniciando ciclos de processamento contínuos...")
-        print("Use Ctrl+C para interromper ou digite 'sair'")
-        
-        # Inicia os ciclos em tasks separadas
-        tasks = [
-            # Ciclo de reflexão - a cada 30 segundos
-            asyncio.create_task(
-                alma.iniciar_ciclo_reflexao(intervalo=ALMA_CONFIG["intervalo_reflexao"])
-            ),
+    """Função principal do sistema, executada de forma assíncrona."""
+    parser = argparse.ArgumentParser(description='Sistema de Memória Contínua e Reflexão Autônoma')
+    parser.add_argument('--noreflexao', action='store_true', help='Desabilita o ciclo de reflexão automático')
+    parser.add_argument('--noaprendizado', action='store_true', help='Desabilita o ciclo de aprendizado automático')
+    parser.add_argument('--noadaptacao', action='store_true', help='Desabilita o ciclo de adaptação automático')
+    parser.add_argument('--reflexao-intervalo', type=int, default=60, help='Intervalo entre ciclos de reflexão em segundos')
+    parser.add_argument('--aprendizado-intervalo', type=int, default=300, help='Intervalo entre ciclos de aprendizado em segundos')
+    parser.add_argument('--adaptacao-intervalo', type=int, default=600, help='Intervalo entre ciclos de adaptação em segundos')
+    
+    args = parser.parse_args()
+    
+    logger.info("Iniciando o sistema...")
+    
+    # Configuração inicial do ambiente
+    await setup_environment()
+    
+    # Inicialização dos componentes do sistema
+    persona = Persona()
+    alma = Alma(persona)
+    
+    # Inicialização do gerenciador de aprendizado (Fase 4)
+    gerenciador_aprendizado = GerenciadorAprendizado(persona, alma)
+    alma.configurar_gerenciador_aprendizado(gerenciador_aprendizado)
+    
+    # Inicialização do sistema adaptativo (Fase 5)
+    adaptativo = AprendizadoAdaptativo(persona, alma, gerenciador_aprendizado)
+    
+    # Carrega estado adaptativo anterior, se existir
+    adaptativo.carregar_estado_aprendizado()
+    
+    # Iniciar tarefas assíncronas
+    tarefas = []
+    
+    # Tarefa para o ciclo de reflexão
+    if not args.noreflexao:
+        logger.info(f"Iniciando ciclo de reflexão (intervalo: {args.reflexao_intervalo}s)")
+        tarefa_reflexao = asyncio.create_task(alma.ciclo_reflexao_continuo(intervalo=args.reflexao_intervalo))
+        tarefas.append(tarefa_reflexao)
+    
+    # Tarefa para o ciclo de aprendizado
+    if not args.noaprendizado:
+        logger.info(f"Iniciando ciclo de aprendizado (intervalo: {args.aprendizado_intervalo}s)")
+        tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado(intervalo=args.aprendizado_intervalo))
+        tarefas.append(tarefa_aprendizado)
+    
+    # Tarefa para o ciclo adaptativo
+    if not args.noadaptacao:
+        logger.info(f"Iniciando ciclo adaptativo (intervalo: {args.adaptacao_intervalo}s)")
+        tarefa_adaptacao = asyncio.create_task(adaptativo.iniciar_ciclo_adaptativo(intervalo=args.adaptacao_intervalo))
+        tarefas.append(tarefa_adaptacao)
+    
+    logger.info("Sistema inicializado. Digite 'ajuda' para ver os comandos disponíveis ou 'sair' para encerrar.")
+    
+    # Loop principal de interação com o usuário
+    while True:
+        try:
+            comando = input("\n> ")
+            resposta = await processar_comandos(comando, persona, alma, gerenciador_aprendizado, adaptativo)
             
-            # Ciclo de aprendizado - a cada 5 minutos (300 segundos)
-            asyncio.create_task(
-                gerenciador_aprendizado.ciclo_aprendizado_continuo(intervalo=300)
-            )
-        ]
-        
-        # Inicia o processamento de comandos
-        comando_task = asyncio.create_task(processar_comandos(persona, alma, gerenciador_aprendizado))
-        
-        # Espera até que o processamento de comandos termine
-        await comando_task
-        
-        # Cancela os ciclos
-        for task in tasks:
-            task.cancel()
-            try:
-                await task
-            except asyncio.CancelledError:
-                pass
+            if resposta == "sair":
+                logger.info("Encerrando o sistema...")
+                break
+            
+            print(resposta)
+        except Exception as e:
+            logger.error(f"Erro ao processar comando: {e}")
+            print(f"Ocorreu um erro: {e}")
     
-    except KeyboardInterrupt:
-        logger.info("Interrupção de teclado detectada")
-    except Exception as e:
-        logger.error(f"Erro não tratado: {str(e)}")
-    finally:
-        logger.info("Finalizando sistema")
+    # Cancela as tarefas em andamento
+    for tarefa in tarefas:
+        tarefa.cancel()
     
-    print("Sistema encerrado.")
+    # Aguarda a conclusão das tarefas
+    for tarefa in tarefas:
+        try:
+            await tarefa
+        except asyncio.CancelledError:
+            pass
+    
+    logger.info("Sistema encerrado.")
 
 def main():
-    """Função principal do sistema."""
+    """Ponto de entrada principal do programa."""
     try:
         asyncio.run(main_async())
     except KeyboardInterrupt:
-        print("\nPrograma interrompido pelo usuário.")
+        logger.info("Sistema interrompido pelo usuário.")
     except Exception as e:
-        print(f"\nErro: {str(e)}")
-        logger.error(f"Erro fatal: {str(e)}", exc_info=True)
+        logger.error(f"Erro não tratado: {e}", exc_info=True)
 
 if __name__ == "__main__":
     main() 
