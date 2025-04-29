@@ -1,8 +1,8 @@
 """
 Sistema de Memória Contínua e Reflexão Autônoma
 
-Arquivo principal para iniciar o sistema, implementando a Fase 3
-do projeto com múltiplos agentes especializados.
+Arquivo principal para iniciar o sistema, implementando a Fase 4
+do projeto com ciclo de pensamento contínuo e aprendizado autônomo.
 """
 import os
 import sys
@@ -28,6 +28,7 @@ logger = logging.getLogger("sistema_memoria")
 # Importa os módulos principais
 from core.persona import Persona
 from core.alma import Alma
+from core.learning import GerenciadorAprendizado
 from core.config import ALMA_CONFIG
 
 def setup_environment():
@@ -42,12 +43,13 @@ def setup_environment():
     os.makedirs("core/agentes", exist_ok=True)
     logger.info("Estrutura de diretórios verificada")
 
-async def processar_comandos(persona, alma):
+async def processar_comandos(persona, alma, gerenciador_aprendizado):
     """Processa comandos do usuário.
     
     Args:
         persona: Instância da classe Persona
         alma: Instância da classe Alma
+        gerenciador_aprendizado: Instância do GerenciadorAprendizado
     """
     while True:
         try:
@@ -67,6 +69,7 @@ async def processar_comandos(persona, alma):
                     print("  emocional   - Ativa o agente emocional")
                     print("  consistencia- Ativa o agente de consistência")
                     print("  padroes     - Ativa o agente de padrões")
+                    print("  otimizar    - Força um ciclo de otimização de aprendizado")
                     print("  memorias    - Lista todas as memórias armazenadas")
                     print("  stats       - Mostra estatísticas do sistema")
                     
@@ -101,6 +104,9 @@ async def processar_comandos(persona, alma):
                     
                 case 'padroes':
                     await alma.ativar_agente_padrao()
+                    
+                case 'otimizar':
+                    await gerenciador_aprendizado.otimizar_processo()
                     
                 case 'memorias':
                     dados = persona._carregar_memorias()
@@ -140,6 +146,13 @@ async def processar_comandos(persona, alma):
                     print(f"Inconsistências detectadas: {alma.agente_consistencia.inconsistencias_detectadas}")
                     print(f"Padrões identificados: {len(alma.agente_padrao.padroes_detectados)}")
                     
+                    # Estatísticas de aprendizado
+                    print(f"Ciclos de otimização: {gerenciador_aprendizado.ciclos_realizados}")
+                    if gerenciador_aprendizado.estatisticas["total_avaliacoes"] > 0:
+                        print(f"Qualidade média das memórias: {gerenciador_aprendizado.estatisticas['qualidade_media']:.2f}/10")
+                    
+                    print(f"Pesos dos agentes: {gerenciador_aprendizado.pesos_agentes}")
+                    
                     # Conta tipos de origem
                     origens = {}
                     for memoria in dados["memorias"]:
@@ -159,6 +172,13 @@ async def processar_comandos(persona, alma):
                     print(f"  Com contexto emocional: {emocional}")
                     print(f"  Com análise de consistência: {consistencia}")
                     print(f"  Com padrões detectados: {padroes}")
+                    
+                    # Áreas de foco atuais
+                    areas_foco = gerenciador_aprendizado._identificar_areas_foco()
+                    if areas_foco:
+                        print("\nÁreas de foco atuais:")
+                        for area in areas_foco:
+                            print(f"  {area}")
                     
                     print("============================\n")
                     
@@ -181,6 +201,10 @@ async def main_async():
         # Inicializa os componentes do sistema
         persona = Persona()
         alma = Alma(persona)
+        gerenciador_aprendizado = GerenciadorAprendizado(persona, alma)
+        
+        # Configura referência circular
+        alma.configurar_gerenciador_aprendizado(gerenciador_aprendizado)
         
         # Carregar algumas informações iniciais
         exemplos = [
@@ -194,26 +218,35 @@ async def main_async():
             persona.receber_informacao(exemplo)
             await asyncio.sleep(0.5)
         
-        print("\nIniciando ciclo de reflexão contínuo...")
+        print("\nIniciando ciclos de processamento contínuos...")
         print("Use Ctrl+C para interromper ou digite 'sair'")
         
-        # Inicia o ciclo de reflexão da Alma em uma task separada
-        ciclo_reflexao_task = asyncio.create_task(
-            alma.iniciar_ciclo_reflexao(intervalo=ALMA_CONFIG["intervalo_reflexao"])
-        )
+        # Inicia os ciclos em tasks separadas
+        tasks = [
+            # Ciclo de reflexão - a cada 30 segundos
+            asyncio.create_task(
+                alma.iniciar_ciclo_reflexao(intervalo=ALMA_CONFIG["intervalo_reflexao"])
+            ),
+            
+            # Ciclo de aprendizado - a cada 5 minutos (300 segundos)
+            asyncio.create_task(
+                gerenciador_aprendizado.ciclo_aprendizado_continuo(intervalo=300)
+            )
+        ]
         
         # Inicia o processamento de comandos
-        comando_task = asyncio.create_task(processar_comandos(persona, alma))
+        comando_task = asyncio.create_task(processar_comandos(persona, alma, gerenciador_aprendizado))
         
         # Espera até que o processamento de comandos termine
         await comando_task
         
-        # Cancela o ciclo de reflexão
-        ciclo_reflexao_task.cancel()
-        try:
-            await ciclo_reflexao_task
-        except asyncio.CancelledError:
-            pass
+        # Cancela os ciclos
+        for task in tasks:
+            task.cancel()
+            try:
+                await task
+            except asyncio.CancelledError:
+                pass
     
     except KeyboardInterrupt:
         logger.info("Interrupção de teclado detectada")

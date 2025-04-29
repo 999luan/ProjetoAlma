@@ -28,6 +28,18 @@ class Alma:
         self.agente_emocional = AgenteEmocional()
         self.agente_consistencia = AgenteConsistencia(persona)
         self.agente_padrao = AgentePadrao(persona)
+        
+        # O gerenciador de aprendizado será inicializado posteriormente
+        # quando tivermos acesso a esta instância de Alma
+        self.gerenciador_aprendizado = None
+    
+    def configurar_gerenciador_aprendizado(self, gerenciador):
+        """Configura o gerenciador de aprendizado.
+        
+        Args:
+            gerenciador: Instância do GerenciadorAprendizado
+        """
+        self.gerenciador_aprendizado = gerenciador
     
     async def iniciar_ciclo_reflexao(self, intervalo=60):
         """Inicia o ciclo contínuo de reflexão.
@@ -51,19 +63,37 @@ class Alma:
         """Executa um ciclo de reflexão sobre as memórias existentes."""
         print("\n=== Iniciando Ciclo de Reflexão ===")
         
-        # Escolhe aleatoriamente qual processo executar
-        escolha = random.random()
-        
-        if escolha < 0.5:  # 50% chance para reflexão
-            await self.ativar_agente_reflexao()
-        elif escolha < 0.7:  # 20% chance para metacognição
-            await self.ativar_agente_metacognicao()
-        elif escolha < 0.8:  # 10% chance para agente emocional
-            await self.ativar_agente_emocional()
-        elif escolha < 0.9:  # 10% chance para agente de consistência
-            await self.ativar_agente_consistencia()
-        else:  # 10% chance para agente de padrões
-            await self.ativar_agente_padrao()
+        # Determina qual agente ativar
+        if self.gerenciador_aprendizado:
+            # Usa pesos otimizados para seleção do agente
+            agente = self.gerenciador_aprendizado.selecionar_agente()
+            print(f"Seleção otimizada: agente '{agente}' escolhido")
+            
+            match agente:
+                case "reflexao":
+                    await self.ativar_agente_reflexao()
+                case "metacognicao":
+                    await self.ativar_agente_metacognicao()
+                case "emocional":
+                    await self.ativar_agente_emocional()
+                case "consistencia":
+                    await self.ativar_agente_consistencia()
+                case "padrao":
+                    await self.ativar_agente_padrao()
+        else:
+            # Escolha aleatória padrão
+            escolha = random.random()
+            
+            if escolha < 0.5:  # 50% chance para reflexão
+                await self.ativar_agente_reflexao()
+            elif escolha < 0.7:  # 20% chance para metacognição
+                await self.ativar_agente_metacognicao()
+            elif escolha < 0.8:  # 10% chance para agente emocional
+                await self.ativar_agente_emocional()
+            elif escolha < 0.9:  # 10% chance para agente de consistência
+                await self.ativar_agente_consistencia()
+            else:  # 10% chance para agente de padrões
+                await self.ativar_agente_padrao()
         
         print("=== Ciclo de Reflexão Concluído ===\n")
     
@@ -213,6 +243,46 @@ class Alma:
         
         return memoria_processada
     
+    async def atualizar_memoria_especifica(self, memoria):
+        """Atualiza uma memória específica, refinando seu conteúdo.
+        
+        Args:
+            memoria (dict): A memória a ser atualizada
+            
+        Returns:
+            dict: A nova memória criada ou None
+        """
+        dados = self.persona._carregar_memorias()
+        
+        print(f"Atualizando memória específica: #{memoria['id']}")
+        
+        # Gera um conteúdo refinado para a memória
+        # Em uma implementação mais avançada, isso poderia usar técnicas de NLP
+        # ou combinar com outras memórias relacionadas
+        conteudo_refinado = f"Versão melhorada e aprofundada: {memoria['conteudo']}"
+        
+        # Cria uma nova versão refinada
+        nova_memoria = {
+            "id": len(dados["memorias"]) + 1,
+            "conteudo": conteudo_refinado,
+            "criado_em": datetime.now().isoformat(),
+            "versao": memoria.get("versao", 1) + 1,
+            "origem": "refinamento_inteligente",
+            "baseado_em": [memoria["id"]]
+        }
+        
+        # Copia atributos relevantes da memória original
+        if "contexto_emocional" in memoria:
+            nova_memoria["contexto_emocional"] = memoria["contexto_emocional"].copy()
+        
+        if "padroes" in memoria:
+            nova_memoria["padroes"] = memoria["padroes"].copy()
+        
+        # Armazena a nova versão
+        self.persona.armazenar_memoria(nova_memoria, dados)
+        
+        return nova_memoria
+    
     def _avaliar_qualidade_memoria(self, memoria):
         """Avalia a qualidade de uma memória específica.
         
@@ -237,13 +307,29 @@ class Alma:
             pontuacao += 1
         
         # Avalia origem
-        if memoria.get("origem") == "sintese_interna":
+        origem = memoria.get("origem", "")
+        if origem == "sintese_interna":
             pontuacao += 1
+        elif origem == "refinamento_inteligente":
+            pontuacao += 2
+        elif origem == "aprofundamento_tematico":
+            pontuacao += 3
         
         # Avalia versão
         versao = memoria.get("versao", 1)
         if versao > 1:
             pontuacao += versao - 1  # Adiciona pontos por cada refinamento
+        
+        # Avalia diversidade de processamento
+        processamentos = 0
+        if "contexto_emocional" in memoria:
+            processamentos += 1
+        if "consistencia" in memoria:
+            processamentos += 1
+        if "padroes" in memoria:
+            processamentos += 1
+        
+        pontuacao += processamentos / 2  # Adiciona até 1.5 pontos por processamentos diversos
         
         # Garante que a pontuação está no intervalo 1-10
         return max(1, min(10, pontuacao))
