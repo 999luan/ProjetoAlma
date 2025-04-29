@@ -9,6 +9,7 @@ import random
 import asyncio
 import time
 from datetime import datetime
+from core.agentes import AgenteEmocional, AgenteConsistencia, AgentePadrao
 
 class Alma:
     def __init__(self, persona):
@@ -22,6 +23,11 @@ class Alma:
         self.ciclo_ativo = False
         self.reflexoes_realizadas = 0
         self.metacognicoes_realizadas = 0
+        
+        # Inicializa os agentes especializados
+        self.agente_emocional = AgenteEmocional()
+        self.agente_consistencia = AgenteConsistencia(persona)
+        self.agente_padrao = AgentePadrao(persona)
     
     async def iniciar_ciclo_reflexao(self, intervalo=60):
         """Inicia o ciclo contínuo de reflexão.
@@ -45,11 +51,19 @@ class Alma:
         """Executa um ciclo de reflexão sobre as memórias existentes."""
         print("\n=== Iniciando Ciclo de Reflexão ===")
         
-        # Escolhe aleatoriamente: reflexão simples ou metacognição
-        if random.random() < 0.7:  # 70% chance de reflexão, 30% metacognição
+        # Escolhe aleatoriamente qual processo executar
+        escolha = random.random()
+        
+        if escolha < 0.5:  # 50% chance para reflexão
             await self.ativar_agente_reflexao()
-        else:
+        elif escolha < 0.7:  # 20% chance para metacognição
             await self.ativar_agente_metacognicao()
+        elif escolha < 0.8:  # 10% chance para agente emocional
+            await self.ativar_agente_emocional()
+        elif escolha < 0.9:  # 10% chance para agente de consistência
+            await self.ativar_agente_consistencia()
+        else:  # 10% chance para agente de padrões
+            await self.ativar_agente_padrao()
         
         print("=== Ciclo de Reflexão Concluído ===\n")
     
@@ -102,6 +116,102 @@ class Alma:
         await asyncio.sleep(1)
         
         return qualidade
+    
+    async def ativar_agente_emocional(self):
+        """Ativa o agente emocional para adicionar contexto emocional às memórias.
+        
+        Este agente analisa o conteúdo das memórias e atribui emoções relacionadas.
+        """
+        print("Ativando Agente Emocional")
+        
+        # Carrega as memórias
+        dados = self.persona._carregar_memorias()
+        if not dados["memorias"]:
+            print("Não há memórias para processar emocionalmente")
+            return None
+        
+        # Escolhe uma memória aleatória para processar
+        memoria = random.choice(dados["memorias"])
+        
+        # Processa a memória com o agente emocional
+        memoria_processada = await self.agente_emocional.processar(memoria)
+        
+        # Se a memória foi alterada, atualiza no armazenamento
+        if memoria_processada != memoria:
+            for idx, mem in enumerate(dados["memorias"]):
+                if mem["id"] == memoria["id"]:
+                    dados["memorias"][idx] = memoria_processada
+                    self.persona._salvar_memorias(dados)
+                    break
+        
+        # Simula tempo de processamento
+        await asyncio.sleep(1)
+        
+        return memoria_processada
+
+    async def ativar_agente_consistencia(self):
+        """Ativa o agente de consistência para detectar e resolver inconsistências.
+        
+        Este agente compara memórias buscando contradições e propõe resoluções.
+        """
+        print("Ativando Agente de Consistência")
+        
+        # Carrega as memórias
+        dados = self.persona._carregar_memorias()
+        if not dados["memorias"]:
+            print("Não há memórias para verificar consistência")
+            return None
+        
+        # Escolhe uma memória aleatória para processar
+        memoria = random.choice(dados["memorias"])
+        
+        # Processa a memória com o agente de consistência
+        memoria_processada = await self.agente_consistencia.processar(memoria)
+        
+        # Se a memória foi alterada, atualiza no armazenamento
+        if memoria_processada != memoria:
+            for idx, mem in enumerate(dados["memorias"]):
+                if mem["id"] == memoria["id"]:
+                    dados["memorias"][idx] = memoria_processada
+                    self.persona._salvar_memorias(dados)
+                    break
+        
+        # Simula tempo de processamento
+        await asyncio.sleep(1)
+        
+        return memoria_processada
+
+    async def ativar_agente_padrao(self):
+        """Ativa o agente de padrões para detectar tendências nas memórias.
+        
+        Este agente analisa o conjunto de memórias buscando padrões recorrentes.
+        """
+        print("Ativando Agente de Padrões")
+        
+        # Carrega as memórias
+        dados = self.persona._carregar_memorias()
+        if not dados["memorias"]:
+            print("Não há memórias para detectar padrões")
+            return None
+        
+        # Escolhe uma memória aleatória para processar
+        memoria = random.choice(dados["memorias"])
+        
+        # Processa a memória com o agente de padrões
+        memoria_processada = await self.agente_padrao.processar(memoria)
+        
+        # Se a memória foi alterada, atualiza no armazenamento
+        if memoria_processada != memoria:
+            for idx, mem in enumerate(dados["memorias"]):
+                if mem["id"] == memoria["id"]:
+                    dados["memorias"][idx] = memoria_processada
+                    self.persona._salvar_memorias(dados)
+                    break
+        
+        # Simula tempo de processamento
+        await asyncio.sleep(1)
+        
+        return memoria_processada
     
     def _avaliar_qualidade_memoria(self, memoria):
         """Avalia a qualidade de uma memória específica.

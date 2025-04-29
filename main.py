@@ -1,8 +1,8 @@
 """
 Sistema de Memória Contínua e Reflexão Autônoma
 
-Arquivo principal para iniciar o sistema, implementando a Fase 1
-do projeto de acordo com o novo plano de desenvolvimento.
+Arquivo principal para iniciar o sistema, implementando a Fase 3
+do projeto com múltiplos agentes especializados.
 """
 import os
 import sys
@@ -39,6 +39,7 @@ def setup_environment():
     
     # Assegura que o diretório core existe
     os.makedirs("core", exist_ok=True)
+    os.makedirs("core/agentes", exist_ok=True)
     logger.info("Estrutura de diretórios verificada")
 
 async def processar_comandos(persona, alma):
@@ -63,6 +64,9 @@ async def processar_comandos(persona, alma):
                     print("  sintese     - Gera uma síntese de memórias existentes")
                     print("  reflexao    - Força um ciclo de reflexão")
                     print("  metacog     - Força um ciclo de metacognição")
+                    print("  emocional   - Ativa o agente emocional")
+                    print("  consistencia- Ativa o agente de consistência")
+                    print("  padroes     - Ativa o agente de padrões")
                     print("  memorias    - Lista todas as memórias armazenadas")
                     print("  stats       - Mostra estatísticas do sistema")
                     
@@ -89,6 +93,15 @@ async def processar_comandos(persona, alma):
                 case 'metacog':
                     await alma.ativar_agente_metacognicao()
                     
+                case 'emocional':
+                    await alma.ativar_agente_emocional()
+                    
+                case 'consistencia':
+                    await alma.ativar_agente_consistencia()
+                    
+                case 'padroes':
+                    await alma.ativar_agente_padrao()
+                    
                 case 'memorias':
                     dados = persona._carregar_memorias()
                     print("\nMemórias armazenadas:")
@@ -102,6 +115,18 @@ async def processar_comandos(persona, alma):
                             # Mostra avaliação se existir
                             if 'avaliacao' in memoria:
                                 print(f"    Qualidade: {memoria['avaliacao']['qualidade']}/10")
+                                
+                            # Mostra contexto emocional se existir
+                            if 'contexto_emocional' in memoria:
+                                print(f"    Emoção: {memoria['contexto_emocional']['emocao']} (intensidade: {memoria['contexto_emocional']['intensidade']})")
+                                
+                            # Mostra consistência se existir
+                            if 'consistencia' in memoria:
+                                print(f"    Inconsistente com: {memoria['consistencia']['inconsistente_com']}")
+                                
+                            # Mostra padrões se existirem
+                            if 'padroes' in memoria:
+                                print(f"    Temas: {', '.join(memoria['padroes']['temas_detectados'])}")
                     
                 case 'stats':
                     dados = persona._carregar_memorias()
@@ -109,6 +134,11 @@ async def processar_comandos(persona, alma):
                     print(f"Total de memórias: {len(dados['memorias'])}")
                     print(f"Reflexões realizadas: {alma.reflexoes_realizadas}")
                     print(f"Metacognições realizadas: {alma.metacognicoes_realizadas}")
+                    
+                    # Estatísticas dos agentes especializados
+                    print(f"Processamentos emocionais: {alma.agente_emocional.processamentos}")
+                    print(f"Inconsistências detectadas: {alma.agente_consistencia.inconsistencias_detectadas}")
+                    print(f"Padrões identificados: {len(alma.agente_padrao.padroes_detectados)}")
                     
                     # Conta tipos de origem
                     origens = {}
@@ -119,6 +149,16 @@ async def processar_comandos(persona, alma):
                     print("\nTipos de memória:")
                     for origem, contagem in origens.items():
                         print(f"  {origem}: {contagem}")
+                        
+                    # Conta memórias com cada tipo de processamento
+                    emocional = sum(1 for m in dados["memorias"] if "contexto_emocional" in m)
+                    consistencia = sum(1 for m in dados["memorias"] if "consistencia" in m)
+                    padroes = sum(1 for m in dados["memorias"] if "padroes" in m)
+                    
+                    print("\nMemórias processadas:")
+                    print(f"  Com contexto emocional: {emocional}")
+                    print(f"  Com análise de consistência: {consistencia}")
+                    print(f"  Com padrões detectados: {padroes}")
                     
                     print("============================\n")
                     

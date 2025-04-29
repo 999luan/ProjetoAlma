@@ -54,7 +54,13 @@
         1,
         2,
         5
-      ]
+      ],
+      "contexto_emocional": {
+        "emocao": "alegria",
+        "intensidade": 0.88,
+        "adicionado_em": "2025-04-28T22:45:21.499399",
+        "versao_emocional": 1
+      }
     },
     {
       "id": 7,
@@ -66,7 +72,12 @@
         4,
         1,
         2
-      ]
+      ],
+      "avaliacao": {
+        "qualidade": 8,
+        "avaliado_em": "2025-04-28T22:37:19.810027",
+        "revisao": 1
+      }
     },
     {
       "id": 8,
@@ -84,7 +95,18 @@
       "versao": 2,
       "origem": "externa",
       "relacionado_a": 2,
-      "evolucao": "Refinamento de memória anterior"
+      "evolucao": "Refinamento de memória anterior",
+      "padroes": {
+        "temas_detectados": [
+          "adaptativa",
+          "constante",
+          "conhecimento",
+          "evolução",
+          "cognição"
+        ],
+        "detectado_em": "2025-04-28T22:45:25.561992",
+        "versao_padrao": 1
+      }
     },
     {
       "id": 10,
@@ -115,7 +137,12 @@
       "baseado_em": [
         11,
         2
-      ]
+      ],
+      "avaliacao": {
+        "qualidade": 8,
+        "avaliado_em": "2025-04-28T22:47:07.848658",
+        "revisao": 1
+      }
     },
     {
       "id": 13,
@@ -159,8 +186,8 @@
       "evolucao": "Refinamento de memória anterior",
       "avaliacao": {
         "qualidade": 7,
-        "avaliado_em": "2025-04-28T22:29:20.747410",
-        "revisao": 2
+        "avaliado_em": "2025-04-28T22:45:19.480589",
+        "revisao": 1
       }
     },
     {
@@ -197,7 +224,7 @@
       ],
       "avaliacao": {
         "qualidade": 8,
-        "avaliado_em": "2025-04-28T22:29:14.724135",
+        "avaliado_em": "2025-04-28T22:37:34.147841",
         "revisao": 1
       }
     },
@@ -211,12 +238,323 @@
         2,
         1
       ]
+    },
+    {
+      "id": 21,
+      "conteudo": "Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:37:19.769271",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 1,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 22,
+      "conteudo": "A cognição adaptativa permite evolução constante do conhecimento.",
+      "criado_em": "2025-04-28T22:37:19.784538",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 2,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 23,
+      "conteudo": "Reflexão e metacognição são processos que melhoram o aprendizado.",
+      "criado_em": "2025-04-28T22:37:19.796694",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 3,
+      "evolucao": "Refinamento de memória anterior",
+      "avaliacao": {
+        "qualidade": 7,
+        "avaliado_em": "2025-04-28T22:37:55.184056",
+        "revisao": 2
+      }
+    },
+    {
+      "id": 24,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:37:20.824803",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        20,
+        15
+      ]
+    },
+    {
+      "id": 25,
+      "conteudo": "Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:37:22.852623",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        21,
+        19
+      ]
+    },
+    {
+      "id": 26,
+      "conteudo": "Combinando os conceitos de: A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:37:24.896594",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        9,
+        11
+      ]
+    },
+    {
+      "id": 27,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento.",
+      "criado_em": "2025-04-28T22:38:16.207506",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        25,
+        1,
+        22
+      ],
+      "padroes": {
+        "temas_detectados": [
+          "aprendizado",
+          "profundo",
+          "contínua",
+          "memória",
+          "sistemas"
+        ],
+        "detectado_em": "2025-04-28T22:47:04.551201",
+        "versao_padrao": 1
+      }
+    },
+    {
+      "id": 28,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:38:37.224438",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        27,
+        26
+      ]
+    },
+    {
+      "id": 29,
+      "conteudo": "Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:38:49.378122",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 1,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 30,
+      "conteudo": "A cognição adaptativa permite evolução constante do conhecimento.",
+      "criado_em": "2025-04-28T22:38:49.899241",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 2,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 31,
+      "conteudo": "Reflexão e metacognição são processos que melhoram o aprendizado.",
+      "criado_em": "2025-04-28T22:38:50.425020",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 3,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 32,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:38:50.940457",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        7,
+        14,
+        29
+      ]
+    },
+    {
+      "id": 33,
+      "conteudo": "oi tudo bem?",
+      "criado_em": "2025-04-28T22:39:16.706651",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 34,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Reflexão e metacognição são processos que melhoram o aprendizado.",
+      "criado_em": "2025-04-28T22:39:21.987157",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        14,
+        7,
+        10
+      ]
+    },
+    {
+      "id": 35,
+      "conteudo": "tudo bem e voce?",
+      "criado_em": "2025-04-28T22:39:33.639493",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 33,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 36,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento.",
+      "criado_em": "2025-04-28T22:39:40.895669",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        4,
+        12
+      ]
+    },
+    {
+      "id": 37,
+      "conteudo": "O aprendizado contínuo é essencial para inteligências artificiais avançadas.",
+      "criado_em": "2025-04-28T22:45:14.811544",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 38,
+      "conteudo": "Sistemas cognitivos devem evoluir constantemente para se adaptar.",
+      "criado_em": "2025-04-28T22:45:15.334447",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 39,
+      "conteudo": "A inconsistência de informações é um problema grave em sistemas de IA.",
+      "criado_em": "2025-04-28T22:45:15.850993",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 40,
+      "conteudo": "O processamento emocional não é relevante para sistemas puramente lógicos.",
+      "criado_em": "2025-04-28T22:45:16.378891",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 41,
+      "conteudo": "Padrões recorrentes podem indicar temas importantes para um sistema cognitivo.",
+      "criado_em": "2025-04-28T22:45:16.911511",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 42,
+      "conteudo": "Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Reflexão e metacognição são processos que melhoram o aprendizado. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:45:17.437943",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        1,
+        18
+      ]
+    },
+    {
+      "id": 43,
+      "conteudo": "Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:45:33.192792",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 1,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 44,
+      "conteudo": "A cognição adaptativa permite evolução constante do conhecimento.",
+      "criado_em": "2025-04-28T22:45:33.713903",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 2,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 45,
+      "conteudo": "Reflexão e metacognição são processos que melhoram o aprendizado.",
+      "criado_em": "2025-04-28T22:45:34.239591",
+      "versao": 2,
+      "origem": "externa",
+      "relacionado_a": 3,
+      "evolucao": "Refinamento de memória anterior"
+    },
+    {
+      "id": 46,
+      "conteudo": "Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e Reflexão e metacognição são processos que melhoram o aprendizado. e O aprendizado contínuo é essencial para inteligências artificiais avançadas.",
+      "criado_em": "2025-04-28T22:45:34.755992",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        10,
+        3,
+        37
+      ]
+    },
+    {
+      "id": 47,
+      "conteudo": "Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:46:05.779130",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        8,
+        12,
+        28
+      ]
+    },
+    {
+      "id": 48,
+      "conteudo": "seu nome é sophia",
+      "criado_em": "2025-04-28T22:46:12.766055",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 49,
+      "conteudo": "voce é sophia, aprenda isso",
+      "criado_em": "2025-04-28T22:46:25.613460",
+      "versao": 1,
+      "origem": "externa"
+    },
+    {
+      "id": 50,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: Combinando os conceitos de: A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:46:29.035777",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        24,
+        21
+      ]
+    },
+    {
+      "id": 51,
+      "conteudo": "Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e A cognição adaptativa permite evolução constante do conhecimento. e Combinando os conceitos de: Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Combinando os conceitos de: Reflexão e metacognição são processos que melhoram o aprendizado. e A cognição adaptativa permite evolução constante do conhecimento. e Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Reflexão e metacognição são processos que melhoram o aprendizado. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T22:46:36.817499",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        5,
+        7,
+        18
+      ]
     }
   ],
   "meta": {
     "criado_em": "2025-04-28T22:26:45.099248",
     "versao": "1.0",
-    "ultima_atualizacao": "2025-04-28T22:29:25.474472",
-    "total_memorias": 20
+    "ultima_atualizacao": "2025-04-28T22:46:36.817522",
+    "total_memorias": 51
   }
 }
