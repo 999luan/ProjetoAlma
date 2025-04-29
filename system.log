@@ -1,0 +1,39 @@
+2025-04-28 22:13:32,886 - memoria_continua - INFO - Adicionado ao path: D:\Projetos\ProjetoAlma
+2025-04-28 22:13:33,822 - memoria_continua.debug - INFO - Relatório - Memória: 24.13MB, CPU: 0.0%, Execução: 0.93s
+2025-04-28 22:13:33,823 - memoria_continua - INFO - Iniciando ciclo de pensamento #1
+2025-04-28 22:13:38,831 - memoria_continua - INFO - Iniciando ciclo de pensamento #2
+2025-04-28 22:13:43,832 - memoria_continua - INFO - Iniciando ciclo de pensamento #3
+2025-04-28 22:13:48,840 - memoria_continua - INFO - Iniciando ciclo de pensamento #4
+2025-04-28 22:13:53,855 - memoria_continua - INFO - Iniciando ciclo de pensamento #5
+2025-04-28 22:13:58,861 - memoria_continua - INFO - Iniciando ciclo de pensamento #6
+2025-04-28 22:14:03,871 - memoria_continua - INFO - Iniciando ciclo de pensamento #7
+2025-04-28 22:14:08,886 - memoria_continua - INFO - Iniciando ciclo de pensamento #8
+2025-04-28 22:14:10,526 - memoria_continua - INFO - Finalizando sistema
+2025-04-28 22:14:10,528 - memoria_continua.debug - INFO - Relatório - Memória: 24.47MB, CPU: 0.0%, Execução: 37.64s
+2025-04-28 22:14:10,529 - memoria_continua - ERROR - Erro ao processar comando: 
+2025-04-28 22:14:10,530 - memoria_continua - INFO - Ciclo de pensamento interrompido
+2025-04-28 22:14:10,530 - memoria_continua - INFO - Processamento de comandos interrompido
+2025-04-28 22:15:37,583 - memoria_continua - INFO - Adicionado ao path: D:\Projetos\ProjetoAlma
+2025-04-28 22:15:38,515 - memoria_continua.debug - INFO - Relatório - Memória: 23.77MB, CPU: 0.0%, Execução: 0.93s
+2025-04-28 22:15:38,516 - memoria_continua - INFO - Iniciando ciclo de pensamento #1
+2025-04-28 22:15:43,523 - memoria_continua - INFO - Iniciando ciclo de pensamento #2
+2025-04-28 22:15:48,534 - memoria_continua - INFO - Iniciando ciclo de pensamento #3
+2025-04-28 22:15:51,823 - memoria_continua.debug - INFO - Relatório - Memória: 24.06MB, CPU: 0.0%, Execução: 14.24s
+2025-04-28 22:15:53,535 - memoria_continua - INFO - Iniciando ciclo de pensamento #4
+2025-04-28 22:15:58,541 - memoria_continua - INFO - Iniciando ciclo de pensamento #5
+2025-04-28 22:16:03,551 - memoria_continua - INFO - Iniciando ciclo de pensamento #6
+2025-04-28 22:16:08,555 - memoria_continua - INFO - Iniciando ciclo de pensamento #7
+2025-04-28 22:16:12,277 - memoria_continua - INFO - Comando de saída recebido
+2025-04-28 22:16:12,277 - memoria_continua - INFO - Ciclo de pensamento interrompido
+2025-04-28 22:16:12,278 - memoria_continua - INFO - Finalizando sistema
+2025-04-28 22:16:12,279 - memoria_continua.debug - INFO - Relatório - Memória: 24.11MB, CPU: 0.0%, Execução: 34.69s
+2025-04-28 22:16:18,150 - memoria_continua - INFO - Adicionado ao path: D:\Projetos\ProjetoAlma
+2025-04-28 22:16:19,069 - memoria_continua.debug - INFO - Relatório - Memória: 23.73MB, CPU: 0.0%, Execução: 0.92s
+2025-04-28 22:16:19,070 - memoria_continua - INFO - Iniciando ciclo de pensamento #1
+2025-04-28 22:16:24,075 - memoria_continua - INFO - Iniciando ciclo de pensamento #2
+2025-04-28 22:16:29,089 - memoria_continua - INFO - Iniciando ciclo de pensamento #3
+2025-04-28 22:16:34,093 - memoria_continua - INFO - Iniciando ciclo de pensamento #4
+2025-04-28 22:16:34,340 - memoria_continua - INFO - Comando de saída recebido
+2025-04-28 22:16:34,341 - memoria_continua - INFO - Ciclo de pensamento interrompido
+2025-04-28 22:16:34,341 - memoria_continua - INFO - Finalizando sistema
+2025-04-28 22:16:34,343 - memoria_continua.debug - INFO - Relatório - Memória: 24.04MB, CPU: 0.0%, Execução: 16.19s
