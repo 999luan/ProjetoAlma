@@ -27,6 +27,13 @@ from core.alma import Alma
 from core.learning import GerenciadorAprendizado
 from core.adaptive_learning import AprendizadoAdaptativo
 
+# Inicialização condicional do módulo de análise semântica
+try:
+    from core.nlp_enhancement import analisador_semantico
+    MODULO_SEMANTICO_DISPONIVEL = True
+except ImportError:
+    MODULO_SEMANTICO_DISPONIVEL = False
+
 # Configuração de logging
 logging.basicConfig(
     level=logging.INFO,
@@ -41,7 +48,7 @@ logger = logging.getLogger(__name__)
 
 async def setup_environment():
     """Configura o ambiente de execução, garantindo que diretórios necessários existam."""
-    diretorios = ['data', 'logs', 'data/sinteses', 'data/adaptive_learning']
+    diretorios = ['data', 'logs', 'data/sinteses', 'data/adaptive_learning', 'data/nlp_models']
     
     for diretorio in diretorios:
         os.makedirs(diretorio, exist_ok=True)
@@ -70,6 +77,10 @@ async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=Non
         - armazenar [mensagem]: Armazena uma nova memória
         - listar [n]: Lista as últimas n memórias (padrão: 5)
         - buscar [termo]: Busca memórias contendo o termo
+        - buscar-semantico [consulta]: Busca memórias semanticamente similares à consulta
+        - extrair-entidades [texto]: Extrai entidades de um texto
+        - analisar-sentimento [texto]: Analisa o sentimento de um texto
+        - palavras-chave [texto]: Extrai palavras-chave de um texto
         - refletir: Executa um ciclo de reflexão
         - metacognicao: Ativa o agente de metacognição
         - emocional: Ativa o agente emocional
@@ -84,6 +95,71 @@ async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=Non
         - estrategias: Lista estratégias efetivas aprendidas
         - sair: Encerra o programa
         """
+    
+    elif partes[0] == "buscar-semantico" and len(partes) > 1:
+        consulta = " ".join(partes[1:])
+        try:
+            # Importa o módulo de análise semântica
+            from core.nlp_enhancement import analisador_semantico
+            if not analisador_semantico.inicializado:
+                await analisador_semantico.inicializar_recursos()
+            
+            memorias = await persona.buscar_memorias_semanticamente(consulta)
+            resultado = "Resultado da busca semântica:\n"
+            for memoria in memorias:
+                resultado += f"ID {memoria['id']}: {memoria['conteudo']}\n"
+            
+            return resultado if resultado else f"Nenhuma memória semanticamente relacionada com '{consulta}'."
+        except ImportError:
+            return "Funcionalidade de busca semântica não disponível. Verifique se as dependências necessárias estão instaladas."
+    
+    elif partes[0] == "extrair-entidades" and len(partes) > 1:
+        texto = " ".join(partes[1:])
+        try:
+            from core.nlp_enhancement import analisador_semantico
+            if not analisador_semantico.inicializado:
+                await analisador_semantico.inicializar_recursos()
+            
+            entidades = await analisador_semantico.extrair_entidades(texto)
+            resultado = "Entidades detectadas:\n"
+            for categoria, items in entidades.items():
+                if not isinstance(entidades, dict) or "error" in entidades:
+                    return "Erro ao extrair entidades. Verifique se as bibliotecas de NLP estão instaladas corretamente."
+                resultado += f"{categoria}: {', '.join([item['texto'] for item in items])}\n"
+            
+            return resultado
+        except ImportError:
+            return "Funcionalidade de extração de entidades não disponível. Verifique se as dependências necessárias estão instaladas."
+    
+    elif partes[0] == "analisar-sentimento" and len(partes) > 1:
+        texto = " ".join(partes[1:])
+        try:
+            from core.nlp_enhancement import analisador_semantico
+            if not analisador_semantico.inicializado:
+                await analisador_semantico.inicializar_recursos()
+            
+            sentimento = await analisador_semantico.analisar_sentimento(texto)
+            return f"""
+            Análise de sentimento:
+            - Polaridade: {sentimento['polaridade']:.4f} (-1=negativo, 1=positivo)
+            - Positivo: {sentimento['positivo']:.4f}
+            - Negativo: {sentimento['negativo']:.4f}
+            - Neutro: {sentimento['neutro']:.4f}
+            """
+        except ImportError:
+            return "Funcionalidade de análise de sentimento não disponível. Verifique se as dependências necessárias estão instaladas."
+    
+    elif partes[0] == "palavras-chave" and len(partes) > 1:
+        texto = " ".join(partes[1:])
+        try:
+            from core.nlp_enhancement import analisador_semantico
+            if not analisador_semantico.inicializado:
+                await analisador_semantico.inicializar_recursos()
+            
+            palavras_chave = await analisador_semantico.extrair_palavras_chave(texto, n=8)
+            return f"Palavras-chave: {', '.join(palavras_chave)}"
+        except ImportError:
+            return "Funcionalidade de extração de palavras-chave não disponível. Verifique se as dependências necessárias estão instaladas."
     
     elif partes[0] == "armazenar" and len(partes) > 1:
         conteudo = " ".join(partes[1:])
@@ -191,9 +267,11 @@ async def main_async():
     parser.add_argument('--noreflexao', action='store_true', help='Desabilita o ciclo de reflexão automático')
     parser.add_argument('--noaprendizado', action='store_true', help='Desabilita o ciclo de aprendizado automático')
     parser.add_argument('--noadaptacao', action='store_true', help='Desabilita o ciclo de adaptação automático')
+    parser.add_argument('--nosemantica', action='store_true', help='Desabilita o módulo de análise semântica avançada')
     parser.add_argument('--reflexao-intervalo', type=int, default=60, help='Intervalo entre ciclos de reflexão em segundos')
     parser.add_argument('--aprendizado-intervalo', type=int, default=300, help='Intervalo entre ciclos de aprendizado em segundos')
     parser.add_argument('--adaptacao-intervalo', type=int, default=600, help='Intervalo entre ciclos de adaptação em segundos')
+    parser.add_argument('--modelo-spacy', type=str, default='pt_core_news_md', help='Modelo spaCy a ser utilizado para análise semântica')
     
     args = parser.parse_args()
     
@@ -215,6 +293,14 @@ async def main_async():
     
     # Carrega estado adaptativo anterior, se existir
     adaptativo.carregar_estado_aprendizado()
+    
+    # Inicialização do módulo semântico avançado, se disponível
+    if MODULO_SEMANTICO_DISPONIVEL and not args.nosemantica:
+        logger.info(f"Inicializando módulo de análise semântica avançada (modelo: {args.modelo_spacy})...")
+        analisador_semantico.caminho_modelo = args.modelo_spacy
+        
+        # Inicializa recursos em background para não bloquear a inicialização
+        asyncio.create_task(analisador_semantico.inicializar_recursos())
     
     # Iniciar tarefas assíncronas
     tarefas = []

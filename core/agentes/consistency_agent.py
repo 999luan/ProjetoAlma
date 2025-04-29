@@ -6,8 +6,19 @@ e propõe resoluções para manter a base de conhecimento coerente.
 """
 
 import re
+import logging
 from datetime import datetime
 from core.utils import calcular_similaridade_texto
+
+# Importação condicional do módulo de análise semântica
+try:
+    from core.nlp_enhancement import analisador_semantico
+    ANALISE_SEMANTICA_DISPONIVEL = True
+except ImportError:
+    ANALISE_SEMANTICA_DISPONIVEL = False
+
+# Configuração de logging
+logger = logging.getLogger(__name__)
 
 class AgenteConsistencia:
     def __init__(self, persona):
@@ -20,6 +31,7 @@ class AgenteConsistencia:
         self.processamentos = 0
         self.inconsistencias_detectadas = 0
         self.resolucoes_aplicadas = 0
+        self.analise_semantica_ativa = ANALISE_SEMANTICA_DISPONIVEL
     
     async def processar(self, memoria):
         """Processa uma memória verificando inconsistências com outras memórias.
@@ -33,8 +45,21 @@ class AgenteConsistencia:
         self.processamentos += 1
         print(f"Agente de Consistência analisando memória #{memoria['id']}")
         
-        # Busca memórias potencialmente inconsistentes
-        inconsistencias = self._buscar_inconsistencias(memoria)
+        # Verifica se pode usar análise semântica avançada
+        if self.analise_semantica_ativa:
+            try:
+                # Busca inconsistências com análise semântica avançada
+                inconsistencias = await self._buscar_inconsistencias_avancadas(memoria)
+                # Se não encontrou com o método avançado, tenta o método tradicional
+                if not inconsistencias:
+                    inconsistencias = self._buscar_inconsistencias(memoria)
+            except Exception as e:
+                logger.error(f"Erro na análise semântica de inconsistências: {e}")
+                # Fallback para método tradicional
+                inconsistencias = self._buscar_inconsistencias(memoria)
+        else:
+            # Usa o método tradicional
+            inconsistencias = self._buscar_inconsistencias(memoria)
         
         # Se não encontrou inconsistências, retorna a memória original
         if not inconsistencias:
@@ -46,7 +71,7 @@ class AgenteConsistencia:
         print(f"Inconsistência detectada entre memória #{memoria['id']} e #{inconsistencias[0]['id']}")
         
         # Resolve a inconsistência
-        memoria_atualizada = self._resolver_inconsistencia(memoria, inconsistencias[0])
+        memoria_atualizada = await self._resolver_inconsistencia(memoria, inconsistencias[0])
         self.resolucoes_aplicadas += 1
         
         return memoria_atualizada
@@ -101,11 +126,64 @@ class AgenteConsistencia:
         
         return resultado
     
-    def _resolver_inconsistencia(self, memoria, memoria_inconsistente):
+    async def _buscar_inconsistencias_avancadas(self, memoria):
+        """Busca inconsistências usando análise semântica avançada.
+        
+        Args:
+            memoria (dict): A memória a ser analisada
+            
+        Returns:
+            list: Lista de memórias inconsistentes
+        """
+        resultado = []
+        
+        # Carrega todas as memórias
+        dados = self.persona._carregar_memorias()
+        if not dados["memorias"]:
+            return resultado
+        
+        # Apenas inicializa o analisador se ainda não tiver sido feito
+        if not analisador_semantico.inicializado:
+            await analisador_semantico.inicializar_recursos()
+            if not analisador_semantico.inicializado:
+                logger.warning("Não foi possível inicializar análise semântica para busca de inconsistências")
+                return resultado
+        
+        for outra_memoria in dados["memorias"]:
+            # Não compara com ela mesma
+            if outra_memoria["id"] == memoria["id"]:
+                continue
+            
+            # Primeiro verifica se são similares o suficiente para comparar
+            similaridade = await analisador_semantico.calcular_similaridade_semantica(
+                memoria["conteudo"], outra_memoria["conteudo"], metodo="embeddings"
+            )
+            
+            # Se forem similares, analisa possíveis contradições
+            if similaridade > 0.5:  # Limiar mais alto para o método semântico
+                resultado_contradicao = await analisador_semantico.encontrar_contradicoes(
+                    memoria, outra_memoria
+                )
+                
+                if resultado_contradicao["encontrou_contradicao"]:
+                    # Adiciona dados de contradição à memória
+                    outra_memoria_copia = outra_memoria.copy()
+                    outra_memoria_copia["detalhes_contradicao"] = {
+                        "sentencas_contraditorias": resultado_contradicao.get("sentencas_contraditorias", []),
+                        "similaridade_geral": resultado_contradicao.get("similaridade_geral", 0.0)
+                    }
+                    resultado.append(outra_memoria_copia)
+                    
+                    logger.info(f"Contradição semântica detectada entre memórias #{memoria['id']} e #{outra_memoria['id']}")
+                    break  # Uma contradição é suficiente para este ciclo
+        
+        return resultado
+    
+    async def _resolver_inconsistencia(self, memoria, memoria_inconsistente):
         """Resolve a inconsistência entre duas memórias.
         
-        Esta é uma implementação simplificada que favorece a memória mais recente
-        e marca a inconsistência.
+        Esta é uma implementação que favorece a memória mais recente
+        e marca a inconsistência com detalhes quando disponíveis.
         
         Args:
             memoria (dict): A memória atual
@@ -116,24 +194,43 @@ class AgenteConsistencia:
         """
         memoria_atualizada = memoria.copy()
         
-        # Adiciona ou atualiza o campo de consistência
+        # Informações básicas de resolução
+        resolucao_info = {
+            "inconsistente_com": [memoria_inconsistente["id"]],
+            "resolvido_em": datetime.now().isoformat(),
+            "resolucao": "Memória atual considerada mais precisa devido à recenticidade."
+        }
+        
+        # Adiciona detalhes semânticos se disponíveis
+        if self.analise_semantica_ativa and "detalhes_contradicao" in memoria_inconsistente:
+            resolucao_info["tipo_contradicao"] = "semântica"
+            
+            # Adiciona as sentenças contraditórias se existirem
+            if "sentencas_contraditorias" in memoria_inconsistente["detalhes_contradicao"]:
+                resolucao_info["sentencas_contraditorias"] = memoria_inconsistente["detalhes_contradicao"]["sentencas_contraditorias"]
+            
+            # Adiciona o nível de similaridade geral
+            if "similaridade_geral" in memoria_inconsistente["detalhes_contradicao"]:
+                resolucao_info["similaridade"] = memoria_inconsistente["detalhes_contradicao"]["similaridade_geral"]
+            
+            # Adiciona explicação mais detalhada
+            resolucao_info["resolucao"] = "Contradição semântica identificada. " + resolucao_info["resolucao"]
+        else:
+            resolucao_info["tipo_contradicao"] = "sintática"
+        
+        # Atualiza ou cria o campo de consistência
         if "consistencia" not in memoria_atualizada:
-            memoria_atualizada["consistencia"] = {
-                "inconsistente_com": [memoria_inconsistente["id"]],
-                "resolvido_em": datetime.now().isoformat(),
-                "resolucao": "Memória atual considerada mais precisa devido à recenticidade."
-            }
+            memoria_atualizada["consistencia"] = resolucao_info
         else:
             # Atualiza o campo existente
             inconsistentes = memoria_atualizada["consistencia"].get("inconsistente_com", [])
             if memoria_inconsistente["id"] not in inconsistentes:
                 inconsistentes.append(memoria_inconsistente["id"])
             
-            memoria_atualizada["consistencia"] = {
-                "inconsistente_com": inconsistentes,
-                "atualizado_em": datetime.now().isoformat(),
-                "resolucao": "Memória atual considerada mais precisa devido à recenticidade."
-            }
+            resolucao_info["inconsistente_com"] = inconsistentes
+            resolucao_info["atualizado_em"] = datetime.now().isoformat()
+            
+            memoria_atualizada["consistencia"] = resolucao_info
         
         print(f"Inconsistência resolvida, favorecendo memória #{memoria['id']}")
         return memoria_atualizada 
