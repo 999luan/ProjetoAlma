@@ -18,3 +18,123 @@
 2025-04-28 22:45:33,178 - sistema_memoria - INFO - Estrutura de diretórios verificada
 2025-04-28 22:47:18,040 - sistema_memoria - INFO - Comando de saída recebido
 2025-04-28 22:47:18,041 - sistema_memoria - INFO - Finalizando sistema
+2025-04-30 19:34:11,117 - __main__ - INFO - Iniciando o sistema...
+2025-04-30 19:34:11,118 - __main__ - INFO - Ambiente configurado com sucesso
+2025-04-30 19:34:11,119 - __main__ - INFO - Inicializando módulo de análise semântica avançada (modelo: pt_core_news_md)...
+2025-04-30 19:34:11,120 - __main__ - INFO - Iniciando ciclo de reflexão (intervalo: 60s)
+2025-04-30 19:34:11,120 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 19:34:11,120 - core.persona - WARNING - Não foi possível inicializar o analisador semântico avançado
+2025-04-30 19:34:11,121 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 19:34:11,121 - __main__ - ERROR - Erro não tratado: 'Alma' object has no attribute 'ciclo_reflexao_continuo'
+Traceback (most recent call last):
+  File "D:\Projetos\ProjetoAlma\main.py", line 359, in main
+    asyncio.run(main_async())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 719, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\Projetos\ProjetoAlma\main.py", line 311, in main_async
+    tarefa_reflexao = asyncio.create_task(alma.ciclo_reflexao_continuo(intervalo=args.reflexao_intervalo))
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Alma' object has no attribute 'ciclo_reflexao_continuo'
+2025-04-30 20:18:15,929 - __main__ - INFO - Iniciando o sistema...
+2025-04-30 20:18:15,930 - __main__ - INFO - Ambiente configurado com sucesso
+2025-04-30 20:18:15,931 - __main__ - INFO - Inicializando módulo de análise semântica avançada (modelo: pt_core_news_md)...
+2025-04-30 20:18:15,931 - __main__ - INFO - Iniciando ciclo de reflexão (intervalo: 60s)
+2025-04-30 20:18:15,932 - __main__ - INFO - Iniciando ciclo de aprendizado (intervalo: 300s)
+2025-04-30 20:18:15,932 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 20:18:15,932 - core.persona - WARNING - Não foi possível inicializar o analisador semântico avançado
+2025-04-30 20:18:15,932 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 20:18:15,935 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 20:18:15,935 - core.agentes.consistency_agent - WARNING - Não foi possível inicializar análise semântica para busca de inconsistências
+2025-04-30 20:18:15,944 - __main__ - ERROR - Erro não tratado: 'GerenciadorAprendizado' object has no attribute 'ciclo_aprendizado'
+Traceback (most recent call last):
+  File "D:\Projetos\ProjetoAlma\main.py", line 359, in main
+    asyncio.run(main_async())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 719, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\Projetos\ProjetoAlma\main.py", line 317, in main_async
+    tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado(intervalo=args.aprendizado_intervalo))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'GerenciadorAprendizado' object has no attribute 'ciclo_aprendizado'. Did you mean: 'ciclos_realizados'?
+2025-04-30 20:38:01,551 - __main__ - INFO - Iniciando o sistema...
+2025-04-30 20:38:01,552 - __main__ - INFO - Ambiente configurado com sucesso
+2025-04-30 20:38:01,553 - __main__ - INFO - Iniciando ciclo de reflexão (intervalo: 60s)
+2025-04-30 20:38:01,553 - __main__ - INFO - Iniciando ciclo de aprendizado (intervalo: 300s)
+2025-04-30 20:38:01,554 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 20:38:01,554 - core.persona - WARNING - Não foi possível inicializar o analisador semântico avançado
+2025-04-30 20:38:01,560 - __main__ - ERROR - Erro não tratado: 'GerenciadorAprendizado' object has no attribute 'ciclo_aprendizado'
+Traceback (most recent call last):
+  File "D:\Projetos\ProjetoAlma\main.py", line 359, in main
+    asyncio.run(main_async())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 719, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\Projetos\ProjetoAlma\main.py", line 317, in main_async
+    tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado(intervalo=args.aprendizado_intervalo))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'GerenciadorAprendizado' object has no attribute 'ciclo_aprendizado'. Did you mean: 'ciclos_realizados'?
+2025-04-30 20:38:09,819 - __main__ - INFO - Iniciando o sistema...
+2025-04-30 20:38:09,819 - __main__ - INFO - Ambiente configurado com sucesso
+2025-04-30 20:38:09,820 - __main__ - INFO - Inicializando módulo de análise semântica avançada (modelo: pt_core_news_md)...
+2025-04-30 20:38:09,820 - __main__ - INFO - Iniciando ciclo de reflexão (intervalo: 60s)
+2025-04-30 20:38:09,821 - __main__ - INFO - Iniciando ciclo de aprendizado (intervalo: 300s)
+2025-04-30 20:38:09,821 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 20:38:09,821 - core.persona - WARNING - Não foi possível inicializar o analisador semântico avançado
+2025-04-30 20:38:09,821 - core.nlp_enhancement - WARNING - Bibliotecas de NLP não disponíveis. Funcionalidades avançadas desabilitadas.
+2025-04-30 20:38:09,839 - __main__ - ERROR - Erro não tratado: 'GerenciadorAprendizado' object has no attribute 'ciclo_aprendizado'
+Traceback (most recent call last):
+  File "D:\Projetos\ProjetoAlma\main.py", line 359, in main
+    asyncio.run(main_async())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 719, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\Projetos\ProjetoAlma\main.py", line 317, in main_async
+    tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado(intervalo=args.aprendizado_intervalo))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'GerenciadorAprendizado' object has no attribute 'ciclo_aprendizado'. Did you mean: 'ciclos_realizados'?
+2025-04-30 20:48:24,656 - __main__ - INFO - Iniciando o sistema...
+2025-04-30 20:48:24,657 - __main__ - INFO - Ambiente configurado com sucesso
+2025-04-30 20:48:24,657 - __main__ - INFO - Inicializando módulo de análise semântica avançada (modelo: pt_core_news_md)...
+2025-04-30 20:48:24,658 - __main__ - INFO - Iniciando ciclo de reflexão (intervalo: 60s)
+2025-04-30 20:48:24,658 - __main__ - INFO - Iniciando ciclo de aprendizado (intervalo: 300s)
+2025-04-30 20:48:24,659 - __main__ - INFO - Iniciando ciclo adaptativo (intervalo: 600s)
+2025-04-30 20:48:24,659 - __main__ - INFO - Sistema inicializado. Digite 'ajuda' para ver os comandos disponíveis ou 'sair' para encerrar.
+2025-04-30 20:49:09,515 - __main__ - ERROR - Erro ao processar comando: 
+2025-04-30 20:49:36,438 - __main__ - INFO - Sistema interrompido pelo usuário.
+2025-04-30 20:49:38,307 - __main__ - INFO - Iniciando o sistema...
+2025-04-30 20:49:38,308 - __main__ - INFO - Ambiente configurado com sucesso
+2025-04-30 20:49:38,309 - __main__ - INFO - Inicializando módulo de análise semântica avançada (modelo: pt_core_news_md)...
+2025-04-30 20:49:38,309 - __main__ - INFO - Iniciando ciclo de reflexão (intervalo: 60s)
+2025-04-30 20:49:38,309 - __main__ - INFO - Iniciando ciclo de aprendizado (intervalo: 300s)
+2025-04-30 20:49:38,310 - __main__ - INFO - Iniciando ciclo adaptativo (intervalo: 600s)
+2025-04-30 20:49:38,310 - __main__ - INFO - Sistema inicializado. Digite 'ajuda' para ver os comandos disponíveis ou 'sair' para encerrar.
+2025-04-30 20:50:29,730 - __main__ - ERROR - Erro ao processar comando: 

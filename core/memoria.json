@@ -616,7 +616,13 @@
       "conteudo": "A detecção de inconsistências lógicas melhora a qualidade do conhecimento.",
       "criado_em": "2025-04-28T22:54:36.920784",
       "versao": 1,
-      "origem": "externa"
+      "origem": "externa",
+      "contexto_emocional": {
+        "emocao": "reflexão",
+        "intensidade": 0.81,
+        "adicionado_em": "2025-04-30T20:38:01.556344",
+        "versao_emocional": 1
+      }
     },
     {
       "id": 58,
@@ -670,12 +676,34 @@
         15
       ],
       "tema_aprofundado": "sistemas"
+    },
+    {
+      "id": 64,
+      "conteudo": "Combinando os conceitos de: Sistemas de memória contínua são fundamentais para o aprendizado profundo. e Sistemas de memória contínua são fundamentais para o aprendizado profundo.",
+      "criado_em": "2025-04-28T23:16:30.725391",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        8,
+        43
+      ]
+    },
+    {
+      "id": 65,
+      "conteudo": "Combinando os conceitos de: A cognição adaptativa permite evolução constante do conhecimento. e A cognição adaptativa permite evolução constante do conhecimento.",
+      "criado_em": "2025-04-30T20:38:09.833854",
+      "versao": 1,
+      "origem": "sintese_interna",
+      "baseado_em": [
+        2,
+        16
+      ]
     }
   ],
   "meta": {
     "criado_em": "2025-04-28T22:26:45.099248",
     "versao": "1.0",
-    "ultima_atualizacao": "2025-04-28T22:54:45.800463",
-    "total_memorias": 63
+    "ultima_atualizacao": "2025-04-30T20:38:09.833871",
+    "total_memorias": 65
   }
 }

@@ -189,7 +189,7 @@ async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=Non
         return resultado if resultado else f"Nenhuma memória encontrada com o termo '{termo}'."
     
     elif partes[0] == "refletir":
-        await alma.ciclo_reflexao()
+        await alma.ciclo_de_reflexao()
         return "Ciclo de reflexão concluído."
     
     elif partes[0] == "metacognicao":
@@ -308,13 +308,13 @@ async def main_async():
     # Tarefa para o ciclo de reflexão
     if not args.noreflexao:
         logger.info(f"Iniciando ciclo de reflexão (intervalo: {args.reflexao_intervalo}s)")
-        tarefa_reflexao = asyncio.create_task(alma.ciclo_reflexao_continuo(intervalo=args.reflexao_intervalo))
+        tarefa_reflexao = asyncio.create_task(alma.iniciar_ciclo_reflexao(intervalo=args.reflexao_intervalo))
         tarefas.append(tarefa_reflexao)
     
     # Tarefa para o ciclo de aprendizado
     if not args.noaprendizado:
         logger.info(f"Iniciando ciclo de aprendizado (intervalo: {args.aprendizado_intervalo}s)")
-        tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado(intervalo=args.aprendizado_intervalo))
+        tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado_continuo(intervalo=args.aprendizado_intervalo))
         tarefas.append(tarefa_aprendizado)
     
     # Tarefa para o ciclo adaptativo

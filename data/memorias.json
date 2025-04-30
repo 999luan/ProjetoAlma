@@ -1,0 +1,23 @@
+{
+  "memorias": [
+    {
+      "id": 1,
+      "conteudo": "Esta e uma memoria de teste.",
+      "timestamp": "2025-04-28T23:28:55.223391",
+      "processada": true
+    },
+    {
+      "id": 2,
+      "conteudo": "Teste de sistema de memoria continua.",
+      "timestamp": "2025-04-28T23:29:07.915136",
+      "processada": true
+    },
+    {
+      "id": 3,
+      "conteudo": "A reflexao autonoma e importante para o processamento de dados.",
+      "timestamp": "2025-04-28T23:29:11.956758",
+      "processada": true
+    }
+  ],
+  "contador": 3
+}

@@ -1,0 +1,51 @@
+2025-04-28 23:24:40,665 - __main__ - INFO - Persona inicializada
+2025-04-28 23:24:40,665 - __main__ - INFO - Alma inicializada
+2025-04-28 23:24:40,668 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:24:40,812 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-28 23:24:40,812 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-28 23:24:40,814 - werkzeug - INFO -  * Restarting with stat
+2025-04-28 23:24:41,255 - __main__ - INFO - Persona inicializada
+2025-04-28 23:24:41,256 - __main__ - INFO - Alma inicializada
+2025-04-28 23:24:41,258 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:24:41,283 - werkzeug - WARNING -  * Debugger is active!
+2025-04-28 23:24:41,289 - werkzeug - INFO -  * Debugger PIN: 581-397-567
+2025-04-28 23:25:40,675 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:25:41,269 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:26:40,682 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:26:41,278 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:27:40,690 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:27:41,283 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:28:40,691 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:28:41,297 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:28:43,765 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:28:43] "GET /api/status HTTP/1.1" 200 -
+2025-04-28 23:28:49,656 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:28:49] "[31m[1mPOST /api/memorias HTTP/1.1[0m" 400 -
+2025-04-28 23:28:55,223 - __main__ - INFO - Memórias salvas com sucesso
+2025-04-28 23:28:55,224 - __main__ - INFO - Memória adicionada: ID 1
+2025-04-28 23:28:55,224 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:28:55] "POST /api/memorias HTTP/1.1" 200 -
+2025-04-28 23:28:59,454 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:28:59] "GET /api/memorias HTTP/1.1" 200 -
+2025-04-28 23:29:03,531 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:03] "GET /api/status HTTP/1.1" 200 -
+2025-04-28 23:29:07,915 - __main__ - INFO - Memórias salvas com sucesso
+2025-04-28 23:29:07,916 - __main__ - INFO - Memória adicionada: ID 2
+2025-04-28 23:29:07,916 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:07] "POST /api/memorias HTTP/1.1" 200 -
+2025-04-28 23:29:11,957 - __main__ - INFO - Memórias salvas com sucesso
+2025-04-28 23:29:11,957 - __main__ - INFO - Memória adicionada: ID 3
+2025-04-28 23:29:11,958 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:11] "POST /api/memorias HTTP/1.1" 200 -
+2025-04-28 23:29:16,050 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:16] "GET /api/memorias/buscar?termo=reflexao HTTP/1.1" 200 -
+2025-04-28 23:29:21,134 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:21] "GET /api/memorias HTTP/1.1" 200 -
+2025-04-28 23:29:27,310 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:27] "GET /api/memorias/buscar?termo=reflexao HTTP/1.1" 200 -
+2025-04-28 23:29:31,752 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:29:31,753 - __main__ - INFO - Memória 1 processada
+2025-04-28 23:29:31,753 - __main__ - INFO - Memória 2 processada
+2025-04-28 23:29:31,754 - __main__ - INFO - Memória 3 processada
+2025-04-28 23:29:31,755 - __main__ - INFO - Memórias salvas com sucesso
+2025-04-28 23:29:31,756 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:31] "POST /api/reflexao HTTP/1.1" 200 -
+2025-04-28 23:29:40,675 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:40] "GET /api/status HTTP/1.1" 200 -
+2025-04-28 23:29:40,691 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:29:41,307 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:29:44,868 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:44] "POST /api/comando HTTP/1.1" 200 -
+2025-04-28 23:29:53,807 - werkzeug - INFO - 127.0.0.1 - - [28/Apr/2025 23:29:53] "POST /api/comando HTTP/1.1" 200 -
+2025-04-28 23:30:40,695 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:30:41,314 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:31:40,701 - __main__ - INFO - Executando ciclo de reflexão
+2025-04-28 23:31:41,323 - __main__ - INFO - Executando ciclo de reflexão
