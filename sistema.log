@@ -138,3 +138,4 @@ AttributeError: 'GerenciadorAprendizado' object has no attribute 'ciclo_aprendiz
 2025-04-30 20:49:38,310 - __main__ - INFO - Iniciando ciclo adaptativo (intervalo: 600s)
 2025-04-30 20:49:38,310 - __main__ - INFO - Sistema inicializado. Digite 'ajuda' para ver os comandos disponíveis ou 'sair' para encerrar.
 2025-04-30 20:50:29,730 - __main__ - ERROR - Erro ao processar comando: 
+2025-04-30 21:24:39,862 - __main__ - INFO - Sistema interrompido pelo usuário.
