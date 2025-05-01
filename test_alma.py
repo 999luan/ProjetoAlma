@@ -15,13 +15,13 @@ async def main():
     
     # Run reflection cycle
     print("\nExecuting Alma reflection cycle...")
-    await alma.ciclo_de_reflexao()
+    await alma.ciclo_reflexao()
     
     # Run a few more cycles
     print("\nRunning multiple reflection cycles...")
     for i in range(3):
         print(f"\n--- Cycle {i+1} ---")
-        await alma.ciclo_de_reflexao()
+        await alma.ciclo_reflexao()
         await asyncio.sleep(1)  # Short pause between cycles
     
     print("\nTest completed successfully!")

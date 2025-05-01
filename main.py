@@ -35,16 +35,41 @@ except ImportError:
     MODULO_SEMANTICO_DISPONIVEL = False
 
 # Configuração de logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("sistema.log"),
-        logging.StreamHandler()
-    ]
-)
+def setup_logging():
+    """Configura o sistema de logging com handlers para arquivo e console."""
+    # Cria diretório de logs se não existir
+    os.makedirs('logs', exist_ok=True)
+    
+    # Configuração do formato de log
+    log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    date_format = '%Y-%m-%d %H:%M:%S'
+    
+    # Configuração do handler para arquivo
+    file_handler = logging.FileHandler(
+        f"logs/sistema_{datetime.now().strftime('%Y%m%d')}.log",
+        encoding='utf-8'
+    )
+    file_handler.setFormatter(logging.Formatter(log_format, date_format))
+    
+    # Configuração do handler para console
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(logging.Formatter(log_format, date_format))
+    
+    # Configuração do logger raiz
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(console_handler)
+    
+    # Configuração específica para cada módulo
+    modules = ['core.alma', 'core.persona', 'core.learning', 'core.adaptive_learning']
+    for module in modules:
+        module_logger = logging.getLogger(module)
+        module_logger.setLevel(logging.INFO)
+    
+    return logging.getLogger(__name__)
 
-logger = logging.getLogger(__name__)
+logger = setup_logging()
 
 async def setup_environment():
     """Configura o ambiente de execução, garantindo que diretórios necessários existam."""
@@ -56,62 +81,79 @@ async def setup_environment():
     logger.info("Ambiente configurado com sucesso")
 
 async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=None, adaptativo=None):
-    """Processa comandos do usuário.
-    
-    Args:
-        comando: Comando a ser processado
-        persona: Instância da classe Persona
-        alma: Instância da classe Alma
-        gerenciador_aprendizado: Instância de GerenciadorAprendizado (opcional)
-        adaptativo: Instância de AprendizadoAdaptativo (opcional)
-        
-    Returns:
-        str: Resposta ao comando
-    """
+    """Processa comandos do usuário."""
     partes = comando.lower().split()
     
     if partes[0] == "ajuda":
         return """
-        Comandos disponíveis:
-        - ajuda: Mostra esta mensagem
-        - armazenar [mensagem]: Armazena uma nova memória
-        - listar [n]: Lista as últimas n memórias (padrão: 5)
-        - buscar [termo]: Busca memórias contendo o termo
-        - buscar-semantico [consulta]: Busca memórias semanticamente similares à consulta
-        - extrair-entidades [texto]: Extrai entidades de um texto
-        - analisar-sentimento [texto]: Analisa o sentimento de um texto
-        - palavras-chave [texto]: Extrai palavras-chave de um texto
-        - refletir: Executa um ciclo de reflexão
-        - metacognicao: Ativa o agente de metacognição
-        - emocional: Ativa o agente emocional
-        - consistencia: Ativa o agente de consistência
-        - padroes: Ativa o agente de identificação de padrões
-        - aprendizado: Informações sobre o aprendizado atual
-        - otimizar: Otimiza o processo de aprendizado
-        - estatisticas: Mostra estatísticas do aprendizado
-        - adaptar [intervalo]: Inicia ciclo adaptativo (intervalo em segundos)
-        - experimentos: Lista experimentos ativos
-        - metricas: Mostra métricas atuais do sistema
-        - estrategias: Lista estratégias efetivas aprendidas
-        - sair: Encerra o programa
+╔════════════════════════════════════════════════════════════════════════════╗
+║                           SISTEMA ALMA - COMANDOS                          ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                             ║
+║  MEMÓRIA E ARMAZENAMENTO:                                                   ║
+║  • armazenar [mensagem]  - Armazena uma nova memória                        ║
+║  • listar [n]           - Lista as últimas n memórias (padrão: 5)          ║
+║  • buscar [termo]       - Busca memórias contendo o termo                   ║
+║                                                                             ║
+║  ANÁLISE E REFLEXÃO:                                                        ║
+║  • buscar-semantico [consulta] - Busca memórias semanticamente similares    ║
+║  • extrair-entidades [texto]   - Extrai entidades de um texto              ║
+║  • analisar-sentimento [texto] - Analisa o sentimento de um texto          ║
+║  • palavras-chave [texto]      - Extrai palavras-chave de um texto         ║
+║                                                                             ║
+║  AGENTES E CICLOS:                                                          ║
+║  • refletir             - Executa um ciclo de reflexão                     ║
+║  • metacognicao         - Ativa o agente de metacognição                   ║
+║  • emocional            - Ativa o agente emocional                         ║
+║  • consistencia         - Ativa o agente de consistência                   ║
+║  • padroes              - Ativa o agente de identificação de padrões       ║
+║                                                                             ║
+║  APRENDIZADO E ADAPTAÇÃO:                                                   ║
+║  • aprendizado          - Informações sobre o aprendizado atual            ║
+║  • otimizar             - Otimiza o processo de aprendizado                ║
+║  • estatisticas         - Mostra estatísticas do aprendizado              ║
+║  • adaptar [intervalo]  - Inicia ciclo adaptativo (intervalo em segundos)  ║
+║  • experimentos         - Lista experimentos ativos                        ║
+║  • metricas             - Mostra métricas atuais do sistema                ║
+║  • estrategias          - Lista estratégias efetivas aprendidas            ║
+║                                                                             ║
+║  SISTEMA:                                                                   ║
+║  • sair                 - Encerra o programa                               ║
+║                                                                             ║
+╚════════════════════════════════════════════════════════════════════════════╝
         """
     
     elif partes[0] == "buscar-semantico" and len(partes) > 1:
         consulta = " ".join(partes[1:])
         try:
-            # Importa o módulo de análise semântica
             from core.nlp_enhancement import analisador_semantico
             if not analisador_semantico.inicializado:
                 await analisador_semantico.inicializar_recursos()
             
             memorias = await persona.buscar_memorias_semanticamente(consulta)
-            resultado = "Resultado da busca semântica:\n"
-            for memoria in memorias:
-                resultado += f"ID {memoria['id']}: {memoria['conteudo']}\n"
+            resultado = "\n╔════════════════════════════════════════════════════════════════════════════╗"
+            resultado += "\n║                        RESULTADO DA BUSCA SEMÂNTICA                        ║"
+            resultado += "\n╠════════════════════════════════════════════════════════════════════════════╣"
             
-            return resultado if resultado else f"Nenhuma memória semanticamente relacionada com '{consulta}'."
+            if memorias:
+                for memoria in memorias:
+                    resultado += f"\n║ ID {memoria['id']}: {memoria['conteudo']}"
+                    resultado += " " * (80 - len(f"║ ID {memoria['id']}: {memoria['conteudo']}")) + "║"
+            else:
+                resultado += f"\n║ Nenhuma memória semanticamente relacionada com '{consulta}'"
+                resultado += " " * (80 - len(f"║ Nenhuma memória semanticamente relacionada com '{consulta}'")) + "║"
+            
+            resultado += "\n╚════════════════════════════════════════════════════════════════════════════╝"
+            return resultado
         except ImportError:
-            return "Funcionalidade de busca semântica não disponível. Verifique se as dependências necessárias estão instaladas."
+            return """
+╔════════════════════════════════════════════════════════════════════════════╗
+║                               ERRO                                         ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Funcionalidade de busca semântica não disponível. Verifique se as          ║
+║ dependências necessárias estão instaladas.                                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
+            """
     
     elif partes[0] == "extrair-entidades" and len(partes) > 1:
         texto = " ".join(partes[1:])
@@ -189,30 +231,30 @@ async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=Non
         return resultado if resultado else f"Nenhuma memória encontrada com o termo '{termo}'."
     
     elif partes[0] == "refletir":
-        await alma.ciclo_de_reflexao()
+        await alma.ciclo_reflexao_continuo()
         return "Ciclo de reflexão concluído."
     
     elif partes[0] == "metacognicao":
-        await alma.ativar_agente_metacognicao()
+        await alma.receber_pensamento("duvida", "Ativando agente de metacognição", prioridade=2)
         return "Agente de metacognição ativado."
     
     elif partes[0] == "emocional":
-        await alma.ativar_agente_emocional()
+        await alma.receber_pensamento("duvida", "Ativando agente emocional", prioridade=2)
         return "Agente emocional ativado."
     
     elif partes[0] == "consistencia":
-        await alma.ativar_agente_consistencia()
+        await alma.receber_pensamento("contradicao", "Ativando agente de consistência", prioridade=2)
         return "Agente de consistência ativado."
     
     elif partes[0] == "padroes":
-        await alma.ativar_agente_padroes()
+        await alma.receber_pensamento("padrao", "Ativando agente de identificação de padrões", prioridade=2)
         return "Agente de identificação de padrões ativado."
     
     elif partes[0] == "aprendizado" and gerenciador_aprendizado:
         return gerenciador_aprendizado.status_aprendizado()
     
     elif partes[0] == "otimizar" and gerenciador_aprendizado:
-        await gerenciador_aprendizado.otimizar_aprendizado()
+        await gerenciador_aprendizado.otimizar_processo()
         return "Processo de aprendizado otimizado."
     
     elif partes[0] == "estatisticas" and gerenciador_aprendizado:
@@ -243,16 +285,39 @@ async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=Non
         if not metricas:
             return "Nenhuma métrica disponível ainda."
         
-        resultado = "Métricas atuais do sistema:\n"
-        for chave, valor in metricas.items():
-            if chave != "timestamp" and chave != "eficiencia_agentes":
-                resultado += f"- {chave}: {valor}\n"
+        resultado = """
+        Métricas atuais do sistema:
+        
+        Memórias:
+        - Total: {n_memorias}
+        - Processadas: {n_memorias_processadas}
+        - Taxa de processamento: {taxa_processamento:.1%}
+        
+        Qualidade:
+        - Média: {qualidade_media:.2f}
+        - Diversidade de temas: {diversidade_temas}
+        
+        Ciclos:
+        - Adaptação: {ciclos_adaptacao}
+        - Experimentos ativos: {experimentos_ativos}
+        - Estratégias aprendidas: {estrategias_aprendidas}
+        
+        Eficiência dos agentes:
+        """.format(**metricas)
         
         if "eficiencia_agentes" in metricas:
-            resultado += "\nEficiência dos agentes:\n"
             for agente, valor in metricas["eficiencia_agentes"].items():
-                resultado += f"- {agente}: {valor}\n"
+                resultado += f"- {agente}: {valor} memórias processadas\n"
         
+        return resultado
+    
+    elif partes[0] == "estrategias" and adaptativo:
+        if not adaptativo.estrategias_efetivas:
+            return "Nenhuma estratégia efetiva aprendida ainda."
+        
+        resultado = "Estratégias efetivas aprendidas:\n"
+        for i, estrategia in enumerate(adaptativo.estrategias_efetivas, 1):
+            resultado += f"{i}. {estrategia}\n"
         return resultado
     
     elif partes[0] == "sair":
@@ -275,32 +340,41 @@ async def main_async():
     
     args = parser.parse_args()
     
+    print("""
+╔════════════════════════════════════════════════════════════════════════════╗
+║                        SISTEMA ALMA - INICIALIZAÇÃO                        ║
+╠════════════════════════════════════════════════════════════════════════════╣
+    """)
+    
     logger.info("Iniciando o sistema...")
     
     # Configuração inicial do ambiente
     await setup_environment()
+    print("║ ✓ Ambiente configurado com sucesso")
     
     # Inicialização dos componentes do sistema
     persona = Persona()
     alma = Alma(persona)
+    print("║ ✓ Componentes principais inicializados")
     
     # Inicialização do gerenciador de aprendizado (Fase 4)
     gerenciador_aprendizado = GerenciadorAprendizado(persona, alma)
     alma.configurar_gerenciador_aprendizado(gerenciador_aprendizado)
+    print("║ ✓ Sistema de aprendizado configurado")
     
     # Inicialização do sistema adaptativo (Fase 5)
     adaptativo = AprendizadoAdaptativo(persona, alma, gerenciador_aprendizado)
-    
-    # Carrega estado adaptativo anterior, se existir
     adaptativo.carregar_estado_aprendizado()
+    print("║ ✓ Sistema adaptativo inicializado")
     
-    # Inicialização do módulo semântico avançado, se disponível
+    # Inicialização do módulo semântico avançado
     if MODULO_SEMANTICO_DISPONIVEL and not args.nosemantica:
         logger.info(f"Inicializando módulo de análise semântica avançada (modelo: {args.modelo_spacy})...")
         analisador_semantico.caminho_modelo = args.modelo_spacy
-        
-        # Inicializa recursos em background para não bloquear a inicialização
         asyncio.create_task(analisador_semantico.inicializar_recursos())
+        print("║ ✓ Módulo de análise semântica inicializado")
+    else:
+        print("║ ⚠ Módulo de análise semântica desabilitado")
     
     # Iniciar tarefas assíncronas
     tarefas = []
@@ -308,22 +382,30 @@ async def main_async():
     # Tarefa para o ciclo de reflexão
     if not args.noreflexao:
         logger.info(f"Iniciando ciclo de reflexão (intervalo: {args.reflexao_intervalo}s)")
-        tarefa_reflexao = asyncio.create_task(alma.iniciar_ciclo_reflexao(intervalo=args.reflexao_intervalo))
+        tarefa_reflexao = asyncio.create_task(alma.ciclo_reflexao_continuo(intervalo=args.reflexao_intervalo))
         tarefas.append(tarefa_reflexao)
+        print(f"║ ✓ Ciclo de reflexão iniciado (intervalo: {args.reflexao_intervalo}s)")
     
     # Tarefa para o ciclo de aprendizado
     if not args.noaprendizado:
         logger.info(f"Iniciando ciclo de aprendizado (intervalo: {args.aprendizado_intervalo}s)")
         tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado_continuo(intervalo=args.aprendizado_intervalo))
         tarefas.append(tarefa_aprendizado)
+        print(f"║ ✓ Ciclo de aprendizado iniciado (intervalo: {args.aprendizado_intervalo}s)")
     
     # Tarefa para o ciclo adaptativo
     if not args.noadaptacao:
         logger.info(f"Iniciando ciclo adaptativo (intervalo: {args.adaptacao_intervalo}s)")
         tarefa_adaptacao = asyncio.create_task(adaptativo.iniciar_ciclo_adaptativo(intervalo=args.adaptacao_intervalo))
         tarefas.append(tarefa_adaptacao)
+        print(f"║ ✓ Ciclo adaptativo iniciado (intervalo: {args.adaptacao_intervalo}s)")
     
-    logger.info("Sistema inicializado. Digite 'ajuda' para ver os comandos disponíveis ou 'sair' para encerrar.")
+    print("""
+╠════════════════════════════════════════════════════════════════════════════╣
+║                        SISTEMA PRONTO PARA USO                             ║
+║ Digite 'ajuda' para ver os comandos disponíveis ou 'sair' para encerrar.   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+    """)
     
     # Loop principal de interação com o usuário
     while True:
@@ -332,13 +414,24 @@ async def main_async():
             resposta = await processar_comandos(comando, persona, alma, gerenciador_aprendizado, adaptativo)
             
             if resposta == "sair":
+                print("""
+╔════════════════════════════════════════════════════════════════════════════╗
+║                        ENCERRANDO O SISTEMA                                ║
+╠════════════════════════════════════════════════════════════════════════════╣
+                """)
                 logger.info("Encerrando o sistema...")
                 break
             
             print(resposta)
         except Exception as e:
             logger.error(f"Erro ao processar comando: {e}")
-            print(f"Ocorreu um erro: {e}")
+            print(f"""
+╔════════════════════════════════════════════════════════════════════════════╗
+║                               ERRO                                         ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ {str(e)}
+╚════════════════════════════════════════════════════════════════════════════╝
+            """)
     
     # Cancela as tarefas em andamento
     for tarefa in tarefas:
@@ -351,6 +444,11 @@ async def main_async():
         except asyncio.CancelledError:
             pass
     
+    print("""
+╔════════════════════════════════════════════════════════════════════════════╗
+║                        SISTEMA ENCERRADO                                   ║
+╚════════════════════════════════════════════════════════════════════════════╝
+    """)
     logger.info("Sistema encerrado.")
 
 def main():

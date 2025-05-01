@@ -33,24 +33,23 @@ class Persona:
         self.memoria_path = memoria_path
         self._inicializar_memoria()
         self.analise_semantica_ativa = ANALISE_SEMANTICA_DISPONIVEL
-        
-        # Tenta inicializar o analisador semântico assíncronamente (se disponível)
-        if self.analise_semantica_ativa:
-            asyncio.create_task(self._inicializar_analisador_semantico())
+        self._analisador_inicializado = False
     
-    async def _inicializar_analisador_semantico(self):
-        """Inicializa o analisador semântico de forma assíncrona."""
-        if self.analise_semantica_ativa:
+    async def inicializar(self):
+        """Inicializa a Persona de forma assíncrona."""
+        if self.analise_semantica_ativa and not self._analisador_inicializado:
             try:
                 success = await analisador_semantico.inicializar_recursos()
                 if success:
                     logger.info("Analisador semântico avançado inicializado com sucesso")
+                    self._analisador_inicializado = True
                 else:
                     logger.warning("Não foi possível inicializar o analisador semântico avançado")
                     self.analise_semantica_ativa = False
             except Exception as e:
                 logger.error(f"Erro ao inicializar analisador semântico: {e}")
                 self.analise_semantica_ativa = False
+        return self
     
     def _inicializar_memoria(self):
         """Inicializa o arquivo de memória se ele não existir."""
@@ -438,14 +437,16 @@ class Persona:
         Returns:
             int: ID da memória adicionada
         """
-        # Delega para o método principal
-        self.receber_informacao(conteudo)
-        
-        # Retorna o ID da última memória
         dados = self._carregar_memorias()
-        if dados["memorias"]:
-            return dados["memorias"][-1]["id"]
-        return None
+        nova_memoria = {
+            "id": len(dados["memorias"]) + 1,
+            "conteudo": conteudo,
+            "criado_em": datetime.now().isoformat(),
+            "versao": 1,
+            "origem": "externa"
+        }
+        self.armazenar_memoria(nova_memoria, dados)
+        return nova_memoria["id"]
     
     def listar_memorias(self, n=5):
         """Lista as últimas n memórias.

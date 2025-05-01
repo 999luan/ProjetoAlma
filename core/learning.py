@@ -249,4 +249,60 @@ class GerenciadorAprendizado:
         pesos = list(self.pesos_agentes.values())
         
         # Selecionar usando distribuição de probabilidade
-        return random.choices(agentes, weights=pesos, k=1)[0] 
+        return random.choices(agentes, weights=pesos, k=1)[0]
+
+    def status_aprendizado(self):
+        """
+        Retorna o status atual do aprendizado.
+        
+        Returns:
+            str: Status formatado do aprendizado
+        """
+        status = f"""
+        Status do Aprendizado:
+        - Ciclos realizados: {self.ciclos_realizados}
+        - Última otimização: {self.estatisticas['ultima_otimizacao'].strftime('%Y-%m-%d %H:%M:%S')}
+        - Qualidade média: {self.estatisticas['qualidade_media']:.2f}
+        - Total de avaliações: {self.estatisticas['total_avaliacoes']}
+        
+        Efetividade dos agentes:
+        """
+        
+        for agente, contagem in self.estatisticas["agentes_efetivos"].items():
+            status += f"- {agente}: {contagem} memórias processadas\n"
+        
+        status += "\nTemas mais frequentes:\n"
+        for tema, frequencia in self.estatisticas["temas_frequentes"].most_common(5):
+            status += f"- {tema}: {frequencia} ocorrências\n"
+        
+        return status 
+
+    def mostrar_estatisticas(self):
+        """
+        Retorna estatísticas detalhadas do aprendizado.
+        
+        Returns:
+            str: Estatísticas formatadas
+        """
+        estatisticas = f"""
+        Estatísticas Detalhadas:
+        - Ciclos de aprendizado: {self.ciclos_realizados}
+        - Última otimização: {self.estatisticas['ultima_otimizacao'].strftime('%Y-%m-%d %H:%M:%S')}
+        - Qualidade média: {self.estatisticas['qualidade_media']:.2f}
+        - Total de avaliações: {self.estatisticas['total_avaliacoes']}
+        
+        Distribuição de agentes:
+        """
+        
+        for agente, peso in self.pesos_agentes.items():
+            estatisticas += f"- {agente}: {peso*100:.1f}%\n"
+        
+        estatisticas += "\nEfetividade dos agentes:\n"
+        for agente, contagem in self.estatisticas["agentes_efetivos"].items():
+            estatisticas += f"- {agente}: {contagem} memórias processadas\n"
+        
+        estatisticas += "\nTemas mais frequentes:\n"
+        for tema, frequencia in self.estatisticas["temas_frequentes"].most_common(10):
+            estatisticas += f"- {tema}: {frequencia} ocorrências\n"
+        
+        return estatisticas 

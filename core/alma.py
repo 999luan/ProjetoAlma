@@ -1,397 +1,441 @@
 """
-Módulo Alma - Responsável por processos internos de reflexão e metacognição.
-
-Este módulo implementa a parte "subconsciente" do sistema, que trabalha continuamente
-em segundo plano para refinar, analisar e evoluir o conhecimento armazenado.
+Módulo principal do sistema Alma.
+Implementa o processamento e reflexão do sistema.
 """
 
-import random
 import asyncio
-import time
+import logging
 from datetime import datetime
-from core.agentes import AgenteEmocional, AgenteConsistencia, AgentePadrao
+from typing import Dict, Any, Optional, List
+from .thought_queue import FilaPensamentos, Pensamento
+
+logger = logging.getLogger(__name__)
 
 class Alma:
+    """Classe principal do sistema Alma."""
+    
     def __init__(self, persona):
         """
-        Inicializa a Alma com referência à Persona.
+        Inicializa o sistema Alma.
         
         Args:
-            persona: Instância da classe Persona
+            persona: Instância do sistema Persona para gerenciamento de memórias
         """
         self.persona = persona
-        self.ciclo_ativo = False
-        self.reflexoes_realizadas = 0
-        self.metacognicoes_realizadas = 0
+        self.fila_pensamentos = FilaPensamentos()
+        self.ciclos_reflexao = 0
+        self.insights = []
         
-        # Inicializa os agentes especializados
-        self.agente_emocional = AgenteEmocional()
-        self.agente_consistencia = AgenteConsistencia(persona)
-        self.agente_padrao = AgentePadrao(persona)
+        # Registra os processadores de pensamentos
+        self.processadores = {
+            "reflexao": self._processar_reflexao,
+            "metacognicao": self._processar_metacognicao,
+            "insight": self._processar_insight,
+            "memoria": self._processar_memoria,
+            "duvida": self._processar_duvida,
+            "contradicao": self._processar_contradicao,
+            "padrao": self._processar_padrao
+        }
         
-        # O gerenciador de aprendizado será inicializado posteriormente
-        # quando tivermos acesso a esta instância de Alma
-        self.gerenciador_aprendizado = None
+        logger.info("Alma inicializada")
+
+    async def receber_pensamento(self, tipo: str, conteudo: str, prioridade: int = 0, 
+                          metadata: Dict[str, Any] = None, tags: List[str] = None,
+                          emocao: str = None, duracao_segundos: int = 300) -> str:
+        """
+        Recebe um novo pensamento para processamento.
+        
+        Args:
+            tipo: Tipo do pensamento
+            conteudo: Conteúdo do pensamento
+            prioridade: Nível de prioridade
+            metadata: Dados adicionais
+            tags: Lista de tags contextuais
+            emocao: Emoção predominante
+            duracao_segundos: Tempo até expiração em segundos
+            
+        Returns:
+            ID do pensamento
+        """
+        # Ajusta prioridade baseado na emoção
+        if emocao:
+            prioridade = self._ajustar_prioridade_por_emocao(prioridade, emocao)
+        
+        pensamento = Pensamento(tipo, conteudo, prioridade, metadata, tags, emocao, duracao_segundos)
+        self.fila_pensamentos.adicionar(pensamento)
+        logger.info(f"Novo pensamento recebido: {tipo} | {conteudo[:30]}... | Emoção: {emocao}")
+        return pensamento.id
+
+    def _ajustar_prioridade_por_emocao(self, prioridade: int, emocao: str) -> int:
+        """
+        Ajusta a prioridade do pensamento baseado na emoção.
+        
+        Args:
+            prioridade: Prioridade original
+            emocao: Emoção do pensamento
+            
+        Returns:
+            Prioridade ajustada
+        """
+        # Emoções que aumentam prioridade
+        emocoes_urgentes = ["medo", "raiva", "alerta", "ansiedade"]
+        # Emoções que diminuem prioridade
+        emocoes_calmas = ["tranquilidade", "satisfacao", "gratidao"]
+        
+        if emocao.lower() in emocoes_urgentes:
+            return prioridade + 2
+        elif emocao.lower() in emocoes_calmas:
+            return max(0, prioridade - 1)
+        return prioridade
+
+    async def ciclo_cognitivo(self) -> Optional[Dict[str, Any]]:
+        """
+        Executa um ciclo de processamento cognitivo.
+        
+        Returns:
+            Resultado do processamento ou None se não houver pensamentos
+        """
+        logger.info("[Alma] Iniciando ciclo cognitivo...")
+        
+        if self.fila_pensamentos.vazia():
+            logger.info("[Alma] Nenhum pensamento na fila.")
+            return None
+
+        pensamento = self.fila_pensamentos.proximo()
+        logger.info(f"[Alma] Processando pensamento: {pensamento.tipo} | {pensamento.conteudo[:30]}...")
+
+        # Processa o pensamento com base no tipo
+        processador = self.processadores.get(pensamento.tipo)
+        if processador:
+            resultado = await processador(pensamento.conteudo, pensamento.metadata)
+            
+            # Avalia o resultado e adiciona feedback
+            feedback = self._avaliar_resultado(resultado, pensamento)
+            pensamento.adicionar_feedback(feedback)
+            
+            # Registra o resultado no histórico
+            self.fila_pensamentos.processar(pensamento, resultado)
+            
+            # Atualiza estatísticas
+            estatisticas = self.fila_pensamentos.obter_estatisticas()
+            logger.info(f"[Alma] Estatísticas atualizadas: {estatisticas}")
+            
+            return {
+                "pensamento_id": pensamento.id,
+                "tipo": pensamento.tipo,
+                "resultado": resultado,
+                "emocao": pensamento.emocao,
+                "tags": pensamento.tags,
+                "feedback": feedback,
+                "estatisticas": estatisticas
+            }
+        
+        return None
+
+    def _avaliar_resultado(self, resultado: Any, pensamento: Pensamento) -> float:
+        """
+        Avalia a qualidade do resultado do processamento.
+        
+        Args:
+            resultado: Resultado do processamento
+            pensamento: Pensamento processado
+            
+        Returns:
+            Score de feedback (0.0 a 1.0)
+        """
+        # Implementação básica - pode ser expandida com análise mais sofisticada
+        if isinstance(resultado, dict) and "resultado" in resultado:
+            # Avalia baseado no tipo de pensamento
+            if pensamento.tipo == "reflexao":
+                return 0.8 if len(resultado["resultado"]) > 50 else 0.5
+            elif pensamento.tipo == "alerta":
+                return 0.9 if "importante" in resultado["resultado"].lower() else 0.6
+            elif pensamento.tipo == "duvida":
+                return 0.7 if "?" in resultado["resultado"] else 0.4
+        return 0.5  # Score padrão
+
+    async def _processar_reflexao(self, conteudo: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Processa um pensamento do tipo reflexão."""
+        logger.info(f"[Alma] Processando reflexão: {conteudo[:50]}...")
+        # Simula processamento reflexivo
+        await asyncio.sleep(0.5)
+        return {
+            "tipo": "reflexao",
+            "resultado": "Reflexão processada com sucesso",
+            "timestamp": datetime.now().isoformat()
+        }
     
+    async def _processar_metacognicao(self, conteudo: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Processa um pensamento do tipo metacognição."""
+        logger.info(f"[Alma] Processando metacognição: {conteudo[:50]}...")
+        # Simula análise metacognitiva
+        await asyncio.sleep(0.5)
+        return {
+            "tipo": "metacognicao",
+            "resultado": "Análise metacognitiva concluída",
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    async def _processar_insight(self, conteudo: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Processa um pensamento do tipo insight."""
+        logger.info(f"[Alma] Processando insight: {conteudo[:50]}...")
+        # Registra o insight
+        insight = {
+            "id": len(self.insights) + 1,
+            "descricao": conteudo,
+            "timestamp": datetime.now().isoformat()
+        }
+        self.insights.append(insight)
+        return {
+            "tipo": "insight",
+            "resultado": "Insight registrado com sucesso",
+            "insight_id": insight["id"],
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    async def _processar_memoria(self, conteudo: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Processa um pensamento do tipo memória."""
+        logger.info(f"[Alma] Processando memória: {conteudo[:50]}...")
+        # Simula processamento de memória
+        await asyncio.sleep(0.5)
+        return {
+            "tipo": "memoria",
+            "resultado": "Memória processada com sucesso",
+            "memoria_id": metadata.get("memoria_id"),
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    async def _processar_duvida(self, conteudo: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Processa um pensamento do tipo dúvida."""
+        logger.info(f"[Alma] Processando dúvida: {conteudo[:50]}...")
+        # Simula análise de dúvida
+        await asyncio.sleep(0.5)
+        return {
+            "tipo": "duvida",
+            "resultado": "Dúvida analisada",
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    async def _processar_contradicao(self, conteudo: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Processa um pensamento do tipo contradição."""
+        logger.info(f"[Alma] Processando contradição: {conteudo[:50]}...")
+        # Simula análise de contradição
+        await asyncio.sleep(0.5)
+        return {
+            "tipo": "contradicao",
+            "resultado": "Contradição analisada",
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    async def _processar_padrao(self, conteudo: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Processa um pensamento do tipo padrão."""
+        logger.info(f"[Alma] Processando padrão: {conteudo[:50]}...")
+        # Simula identificação de padrão
+        await asyncio.sleep(0.5)
+        return {
+            "tipo": "padrao",
+            "resultado": "Padrão identificado e analisado",
+            "timestamp": datetime.now().isoformat()
+        }
+
+    async def ciclo_reflexao(self, num_memorias: int = None) -> None:
+        """
+        Executa um ciclo de reflexão sobre as memórias e pensamentos.
+        
+        Args:
+            num_memorias: Número de memórias recentes a processar (opcional)
+        """
+        logger.info("[Alma] Iniciando ciclo de reflexão...")
+        
+        # Gera pensamentos reflexivos sobre memórias recentes
+        dados = self.persona._carregar_memorias()
+        if dados["memorias"]:
+            # Pega as últimas n memórias
+            if num_memorias is None:
+                num_memorias = 5  # Padrão
+            memorias_recentes = dados["memorias"][-num_memorias:]
+            
+            for memoria in memorias_recentes:
+                # Gera reflexão com emoção e tags apropriadas
+                emocao = self._inferir_emocao(memoria["conteudo"])
+                tags = self._extrair_tags(memoria["conteudo"])
+                
+                await self.receber_pensamento(
+                    "reflexao",
+                    f"Refletindo sobre: {memoria['conteudo']}",
+                    prioridade=2,
+                    metadata={"memoria_id": memoria["id"]},
+                    emocao=emocao,
+                    tags=tags
+                )
+        
+        # Processa pensamentos pendentes
+        while not self.fila_pensamentos.vazia():
+            await self.ciclo_cognitivo()
+            await asyncio.sleep(0.1)  # Pequena pausa entre processamentos
+    
+    def _inferir_emocao(self, texto: str) -> Optional[str]:
+        """
+        Infere a emoção predominante de um texto.
+        
+        Args:
+            texto: Texto para análise
+            
+        Returns:
+            Nome da emoção ou None
+        """
+        # Mapeamento simples de palavras-chave para emoções
+        mapa_emocoes = {
+            "feliz": "alegria",
+            "triste": "tristeza",
+            "raiva": "raiva",
+            "medo": "medo",
+            "surpresa": "surpresa",
+            "dúvida": "curiosidade",
+            "curioso": "curiosidade",
+            "preocupa": "preocupação"
+        }
+        
+        texto = texto.lower()
+        for palavra, emocao in mapa_emocoes.items():
+            if palavra in texto:
+                return emocao
+        
+        return None
+    
+    def _extrair_tags(self, texto: str) -> List[str]:
+        """
+        Extrai tags relevantes de um texto.
+        
+        Args:
+            texto: Texto para análise
+            
+        Returns:
+            Lista de tags
+        """
+        # Lista de palavras-chave para tags
+        palavras_chave = {
+            "memória": "memoria",
+            "aprendizado": "aprendizado",
+            "emoção": "emocional",
+            "padrão": "padrao",
+            "dúvida": "duvida",
+            "reflexão": "reflexao",
+            "missão": "missao",
+            "objetivo": "objetivo",
+            "relação": "relacional"
+        }
+        
+        tags = set()
+        texto = texto.lower()
+        
+        for palavra, tag in palavras_chave.items():
+            if palavra in texto:
+                tags.add(tag)
+        
+        return list(tags)
+
+    async def ciclo_reflexao_continuo(self, intervalo: int = 60) -> None:
+        """
+        Executa ciclos de reflexão continuamente com o intervalo especificado.
+        
+        Args:
+            intervalo: Tempo em segundos entre os ciclos
+        """
+        logger.info(f"[Alma] Iniciando ciclo de reflexão contínuo (intervalo: {intervalo}s)")
+        
+        while True:
+            try:
+                # Executa um ciclo de reflexão
+                await self.ciclo_reflexao()
+                
+                # Gera pensamento sobre o ciclo
+                await self.receber_pensamento(
+                    "reflexao",
+                    "Avaliando resultados do último ciclo de reflexão",
+                    prioridade=1,
+                    tags=["reflexao", "ciclo"],
+                    emocao="curiosidade",
+                    duracao_segundos=intervalo
+                )
+                
+                # Limpa pensamentos antigos antes de dormir
+                self.fila_pensamentos._limpar_expirados()
+                
+                # Aguarda o próximo ciclo
+                await asyncio.sleep(intervalo)
+            
+            except asyncio.CancelledError:
+                logger.info("[Alma] Ciclo de reflexão contínuo cancelado")
+                break
+            except Exception as e:
+                logger.error(f"[Alma] Erro no ciclo de reflexão: {e}")
+                await asyncio.sleep(intervalo)  # Aguarda antes de tentar novamente
+
     def configurar_gerenciador_aprendizado(self, gerenciador):
-        """Configura o gerenciador de aprendizado.
+        """
+        Configura o gerenciador de aprendizado.
         
         Args:
             gerenciador: Instância do GerenciadorAprendizado
         """
         self.gerenciador_aprendizado = gerenciador
-    
-    async def iniciar_ciclo_reflexao(self, intervalo=60):
-        """Inicia o ciclo contínuo de reflexão.
+        logger.info("Gerenciador de aprendizado configurado")
+
+    def listar_historico_pensamentos(self, n: int = 10) -> List[str]:
+        """
+        Lista os últimos n pensamentos processados.
         
         Args:
-            intervalo (int): Intervalo em segundos entre reflexões
-        """
-        self.ciclo_ativo = True
-        print(f"Iniciando ciclo de reflexão a cada {intervalo} segundos")
-        
-        try:
-            while self.ciclo_ativo:
-                await self.ciclo_de_reflexao()
-                await asyncio.sleep(intervalo)
-        except asyncio.CancelledError:
-            self.ciclo_ativo = False
-            print("Ciclo de reflexão interrompido")
-            raise
-    
-    async def ciclo_de_reflexao(self):
-        """Executa um ciclo de reflexão sobre as memórias existentes."""
-        print("\n=== Iniciando Ciclo de Reflexão ===")
-        
-        # Determina qual agente ativar
-        if self.gerenciador_aprendizado:
-            # Usa pesos otimizados para seleção do agente
-            agente = self.gerenciador_aprendizado.selecionar_agente()
-            print(f"Seleção otimizada: agente '{agente}' escolhido")
-            
-            match agente:
-                case "reflexao":
-                    await self.ativar_agente_reflexao()
-                case "metacognicao":
-                    await self.ativar_agente_metacognicao()
-                case "emocional":
-                    await self.ativar_agente_emocional()
-                case "consistencia":
-                    await self.ativar_agente_consistencia()
-                case "padrao":
-                    await self.ativar_agente_padrao()
-        else:
-            # Escolha aleatória padrão
-            escolha = random.random()
-            
-            if escolha < 0.5:  # 50% chance para reflexão
-                await self.ativar_agente_reflexao()
-            elif escolha < 0.7:  # 20% chance para metacognição
-                await self.ativar_agente_metacognicao()
-            elif escolha < 0.8:  # 10% chance para agente emocional
-                await self.ativar_agente_emocional()
-            elif escolha < 0.9:  # 10% chance para agente de consistência
-                await self.ativar_agente_consistencia()
-            else:  # 10% chance para agente de padrões
-                await self.ativar_agente_padrao()
-        
-        print("=== Ciclo de Reflexão Concluído ===\n")
-    
-    async def ativar_agente_reflexao(self):
-        """Ativa o agente de reflexão para criar novas sínteses.
-        
-        Este agente pega memórias existentes e cria conexões entre elas.
-        """
-        print("Ativando Agente de Reflexão")
-        self.reflexoes_realizadas += 1
-        
-        # Gera uma síntese usando o método da Persona
-        sintese = self.persona.gerar_sintese()
-        
-        if sintese:
-            print(f"Reflexão #{self.reflexoes_realizadas}: {sintese}")
-            # Simula tempo de processamento
-            await asyncio.sleep(1)
-            return sintese
-        else:
-            print("Não foi possível gerar uma reflexão")
-            return None
-    
-    async def ativar_agente_metacognicao(self):
-        """Ativa o agente de metacognição para avaliar a qualidade das memórias.
-        
-        Este agente analisa as memórias existentes e avalia seu valor.
-        """
-        print("Ativando Agente de Metacognição")
-        self.metacognicoes_realizadas += 1
-        
-        # Carrega as memórias
-        dados = self.persona._carregar_memorias()
-        if not dados["memorias"]:
-            print("Não há memórias para avaliar")
-            return None
-        
-        # Escolhe uma memória aleatória para avaliar
-        memoria = random.choice(dados["memorias"])
-        
-        # Avalia a qualidade da memória (implementação simples)
-        qualidade = self._avaliar_qualidade_memoria(memoria)
-        
-        # Registra a avaliação na própria memória
-        self._registrar_avaliacao(memoria, qualidade, dados)
-        
-        print(f"Metacognição #{self.metacognicoes_realizadas}: Memória #{memoria['id']} avaliada com qualidade {qualidade}/10")
-        
-        # Simula tempo de processamento
-        await asyncio.sleep(1)
-        
-        return qualidade
-    
-    async def ativar_agente_emocional(self):
-        """Ativa o agente emocional para adicionar contexto emocional às memórias.
-        
-        Este agente analisa o conteúdo das memórias e atribui emoções relacionadas.
-        """
-        print("Ativando Agente Emocional")
-        
-        # Carrega as memórias
-        dados = self.persona._carregar_memorias()
-        if not dados["memorias"]:
-            print("Não há memórias para processar emocionalmente")
-            return None
-        
-        # Escolhe uma memória aleatória para processar
-        memoria = random.choice(dados["memorias"])
-        
-        # Processa a memória com o agente emocional
-        memoria_processada = await self.agente_emocional.processar(memoria)
-        
-        # Se a memória foi alterada, atualiza no armazenamento
-        if memoria_processada != memoria:
-            for idx, mem in enumerate(dados["memorias"]):
-                if mem["id"] == memoria["id"]:
-                    dados["memorias"][idx] = memoria_processada
-                    self.persona._salvar_memorias(dados)
-                    break
-        
-        # Simula tempo de processamento
-        await asyncio.sleep(1)
-        
-        return memoria_processada
-
-    async def ativar_agente_consistencia(self):
-        """Ativa o agente de consistência para detectar e resolver inconsistências.
-        
-        Este agente compara memórias buscando contradições e propõe resoluções.
-        """
-        print("Ativando Agente de Consistência")
-        
-        # Carrega as memórias
-        dados = self.persona._carregar_memorias()
-        if not dados["memorias"]:
-            print("Não há memórias para verificar consistência")
-            return None
-        
-        # Escolhe uma memória aleatória para processar
-        memoria = random.choice(dados["memorias"])
-        
-        # Processa a memória com o agente de consistência
-        memoria_processada = await self.agente_consistencia.processar(memoria)
-        
-        # Se a memória foi alterada, atualiza no armazenamento
-        if memoria_processada != memoria:
-            for idx, mem in enumerate(dados["memorias"]):
-                if mem["id"] == memoria["id"]:
-                    dados["memorias"][idx] = memoria_processada
-                    self.persona._salvar_memorias(dados)
-                    break
-        
-        # Simula tempo de processamento
-        await asyncio.sleep(1)
-        
-        return memoria_processada
-
-    async def ativar_agente_padrao(self):
-        """Ativa o agente de padrões para detectar tendências nas memórias.
-        
-        Este agente analisa o conjunto de memórias buscando padrões recorrentes.
-        """
-        print("Ativando Agente de Padrões")
-        
-        # Carrega as memórias
-        dados = self.persona._carregar_memorias()
-        if not dados["memorias"]:
-            print("Não há memórias para detectar padrões")
-            return None
-        
-        # Escolhe uma memória aleatória para processar
-        memoria = random.choice(dados["memorias"])
-        
-        # Processa a memória com o agente de padrões
-        memoria_processada = await self.agente_padrao.processar(memoria)
-        
-        # Se a memória foi alterada, atualiza no armazenamento
-        if memoria_processada != memoria:
-            for idx, mem in enumerate(dados["memorias"]):
-                if mem["id"] == memoria["id"]:
-                    dados["memorias"][idx] = memoria_processada
-                    self.persona._salvar_memorias(dados)
-                    break
-        
-        # Simula tempo de processamento
-        await asyncio.sleep(1)
-        
-        return memoria_processada
-    
-    async def atualizar_memoria_especifica(self, memoria):
-        """Atualiza uma memória específica, refinando seu conteúdo.
-        
-        Args:
-            memoria (dict): A memória a ser atualizada
+            n: Número de pensamentos a retornar
             
         Returns:
-            dict: A nova memória criada ou None
+            Lista de representações string dos pensamentos
         """
-        dados = self.persona._carregar_memorias()
+        return self.fila_pensamentos.listar_historico(n)
+
+    def listar_fila_pensamentos(self) -> List[str]:
+        """
+        Lista os pensamentos atualmente na fila.
         
-        print(f"Atualizando memória específica: #{memoria['id']}")
-        
-        # Gera um conteúdo refinado para a memória
-        # Em uma implementação mais avançada, isso poderia usar técnicas de NLP
-        # ou combinar com outras memórias relacionadas
-        conteudo_refinado = f"Versão melhorada e aprofundada: {memoria['conteudo']}"
-        
-        # Cria uma nova versão refinada
-        nova_memoria = {
-            "id": len(dados["memorias"]) + 1,
-            "conteudo": conteudo_refinado,
-            "criado_em": datetime.now().isoformat(),
-            "versao": memoria.get("versao", 1) + 1,
-            "origem": "refinamento_inteligente",
-            "baseado_em": [memoria["id"]]
-        }
-        
-        # Copia atributos relevantes da memória original
-        if "contexto_emocional" in memoria:
-            nova_memoria["contexto_emocional"] = memoria["contexto_emocional"].copy()
-        
-        if "padroes" in memoria:
-            nova_memoria["padroes"] = memoria["padroes"].copy()
-        
-        # Armazena a nova versão
-        self.persona.armazenar_memoria(nova_memoria, dados)
-        
-        return nova_memoria
-    
-    def _avaliar_qualidade_memoria(self, memoria):
-        """Avalia a qualidade de uma memória específica.
-        
-        Esta é uma implementação simplificada que considera:
-        - Comprimento do conteúdo
-        - Origem da memória (sinteses internas são valorizadas)
-        - Versão (memórias refinadas são mais valorizadas)
-        
-        Args:
-            memoria (dict): A memória a ser avaliada
-            
         Returns:
-            int: Pontuação de qualidade (1-10)
+            Lista de representações string dos pensamentos
         """
-        pontuacao = 5  # Pontuação base
+        return self.fila_pensamentos.listar_fila()
+
+    async def ativar_agente_metacognicao(self) -> None:
+        """Ativa o agente de metacognição para avaliar o estado do sistema."""
+        logger.info("[Alma] Ativando agente de metacognição...")
         
-        # Avalia comprimento (maior conteúdo = mais informação)
-        tamanho = len(memoria["conteudo"])
-        if tamanho > 100:
-            pontuacao += 2
-        elif tamanho > 50:
-            pontuacao += 1
+        # Analisa o histórico recente de pensamentos
+        historico = self.fila_pensamentos.listar_historico(5)
+        if historico:
+            # Gera pensamento metacognitivo sobre o histórico
+            await self.receber_pensamento(
+                "metacognicao",
+                "Analisando padrões nos últimos pensamentos processados",
+                prioridade=3,
+                tags=["metacognicao", "analise"],
+                emocao="curiosidade"
+            )
         
-        # Avalia origem
-        origem = memoria.get("origem", "")
-        if origem == "sintese_interna":
-            pontuacao += 1
-        elif origem == "refinamento_inteligente":
-            pontuacao += 2
-        elif origem == "aprofundamento_tematico":
-            pontuacao += 3
+        # Avalia a fila atual
+        fila_atual = self.fila_pensamentos.listar_fila()
+        if fila_atual:
+            # Gera pensamento sobre a fila atual
+            await self.receber_pensamento(
+                "metacognicao",
+                "Avaliando prioridades da fila de pensamentos",
+                prioridade=3,
+                tags=["metacognicao", "prioridade"],
+                emocao="concentracao"
+            )
         
-        # Avalia versão
-        versao = memoria.get("versao", 1)
-        if versao > 1:
-            pontuacao += versao - 1  # Adiciona pontos por cada refinamento
-        
-        # Avalia diversidade de processamento
-        processamentos = 0
-        if "contexto_emocional" in memoria:
-            processamentos += 1
-        if "consistencia" in memoria:
-            processamentos += 1
-        if "padroes" in memoria:
-            processamentos += 1
-        
-        pontuacao += processamentos / 2  # Adiciona até 1.5 pontos por processamentos diversos
-        
-        # Garante que a pontuação está no intervalo 1-10
-        return max(1, min(10, pontuacao))
-    
-    def _registrar_avaliacao(self, memoria, qualidade, dados):
-        """Registra a avaliação de qualidade na memória.
-        
-        Args:
-            memoria (dict): A memória avaliada
-            qualidade (int): A pontuação de qualidade
-            dados (dict): Os dados completos de memória
-        """
-        # Encontra a memória no conjunto de dados
-        for idx, mem in enumerate(dados["memorias"]):
-            if mem["id"] == memoria["id"]:
-                # Adiciona ou atualiza o campo de avaliação
-                dados["memorias"][idx]["avaliacao"] = {
-                    "qualidade": qualidade,
-                    "avaliado_em": datetime.now().isoformat(),
-                    "revisao": self.metacognicoes_realizadas
-                }
-                
-                # Se for de baixa qualidade, marca para revisão futura
-                if qualidade < 4:
-                    dados["memorias"][idx]["precisa_revisao"] = True
-                
-                # Salva as alterações
-                self.persona._salvar_memorias(dados)
-                break
-    
-    def atualizar_memorias(self):
-        """Atualiza memórias baseado nas avaliações de metacognição.
-        
-        Este método revisa memórias que foram marcadas como de baixa qualidade
-        e tenta refiná-las.
-        """
-        dados = self.persona._carregar_memorias()
-        
-        # Encontra memórias que precisam de revisão
-        for memoria in dados["memorias"]:
-            if memoria.get("precisa_revisao"):
-                print(f"Atualizando memória de baixa qualidade: #{memoria['id']}")
-                
-                # Tenta refinar a memória
-                conteudo_refinado = f"Versão melhorada de: {memoria['conteudo']}"
-                
-                # Cria uma nova versão refinada
-                nova_memoria = {
-                    "id": len(dados["memorias"]) + 1,
-                    "conteudo": conteudo_refinado,
-                    "criado_em": datetime.now().isoformat(),
-                    "versao": memoria.get("versao", 1) + 1,
-                    "origem": "refinamento_metacognitivo",
-                    "baseado_em": [memoria["id"]]
-                }
-                
-                # Armazena a nova versão
-                self.persona.armazenar_memoria(nova_memoria, dados)
-                
-                # Remove a marcação de necessidade de revisão
-                for idx, mem in enumerate(dados["memorias"]):
-                    if mem["id"] == memoria["id"]:
-                        dados["memorias"][idx]["precisa_revisao"] = False
-                        self.persona._salvar_memorias(dados)
-                        break 
+        # Gera insight metacognitivo
+        await self.receber_pensamento(
+            "insight",
+            "Reflexão sobre o estado atual do sistema",
+            prioridade=4,
+            tags=["metacognicao", "insight"],
+            emocao="curiosidade"
+        ) 

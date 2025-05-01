@@ -98,3 +98,6 @@ resultados = persona.buscar_padroes("learning")
 3. Natural language processing
 4. Real-time visualization
 5. Distributed processing support 
+
+### `ciclo_reflexao()`
+Escolhe memórias antigas, compara, refina ou sintetiza novas. 

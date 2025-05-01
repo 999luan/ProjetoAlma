@@ -142,12 +142,22 @@ class AprendizadoAdaptativo:
                 self.historico_metricas["eficiencia_agentes"][agente] = []
             self.historico_metricas["eficiencia_agentes"][agente].append(valor)
         
+        # Calcula métricas adicionais
+        n_memorias_total = len(dados["memorias"])
+        n_memorias_processadas = len([m for m in dados["memorias"] if m.get("processada", False)])
+        taxa_processamento = n_memorias_processadas / n_memorias_total if n_memorias_total > 0 else 0
+        
         # Retorna métricas coletadas
         return {
             "qualidade_media": qualidade_media,
             "diversidade_temas": n_temas_significativos,
-            "n_memorias": len(dados["memorias"]),
+            "n_memorias": n_memorias_total,
+            "n_memorias_processadas": n_memorias_processadas,
+            "taxa_processamento": taxa_processamento,
             "eficiencia_agentes": eficiencia,
+            "ciclos_adaptacao": self.ciclos_adaptacao,
+            "experimentos_ativos": len(self.experimentos_ativos),
+            "estrategias_aprendidas": len(self.estrategias_efetivas),
             "timestamp": datetime.now().isoformat()
         }
     
