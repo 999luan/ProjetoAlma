@@ -76,7 +76,8 @@ class PersonaSimples:
         return sorted(self.memorias, key=lambda m: m["id"], reverse=True)[:limite]
     
     def buscar_memorias(self, termo):
-        return [m for m in self.memorias if termo.lower() in m["conteudo"].lower()]
+        termo = str(termo).lower()
+        return [m for m in self.memorias if termo in str(m.get("conteudo", "")).lower()]
 
 class AlmaSimples:
     def __init__(self, persona):
@@ -87,11 +88,34 @@ class AlmaSimples:
     
     async def ciclo_reflexao(self):
         """Executa um ciclo de reflexão."""
-        return await self.ciclo_de_reflexao()
+        logger.info("Executando ciclo de reflexão")
+        memorias_nao_processadas = [m for m in self.persona.memorias if not m.get("processada")]
+        
+        if memorias_nao_processadas:
+            for memoria in memorias_nao_processadas:
+                memoria["processada"] = True
+                logger.info(f"Memória {memoria['id']} processada")
+            
+            self.persona._salvar_memorias()
+            self.ciclos_reflexao += 1
+            
+            # Simular insight
+            if self.ciclos_reflexao % 3 == 0:
+                insight = {
+                    "id": len(self.insights) + 1,
+                    "descricao": f"Insight automático após ciclo {self.ciclos_reflexao}",
+                    "timestamp": datetime.now().isoformat()
+                }
+                self.insights.append(insight)
+                logger.info(f"Novo insight gerado: {insight['descricao']}")
+        
+        return f"Ciclo de reflexão {self.ciclos_reflexao} concluído"
     
     async def ciclo_reflexao_continuo(self, intervalo=60):
         """Inicia o ciclo contínuo de reflexão."""
-        await self.iniciar_ciclo_reflexao(intervalo=intervalo)
+        while True:
+            await self.ciclo_reflexao()
+            await asyncio.sleep(intervalo)
 
 # Inicializar componentes do sistema
 persona = None
@@ -181,7 +205,7 @@ def iniciar_tarefas_background():
         asyncio.set_event_loop(loop)
         
         # Criar e executar tarefas
-        task = loop.create_task(alma.iniciar_ciclo_reflexao(intervalo=60))
+        task = loop.create_task(alma.ciclo_reflexao_continuo(intervalo=60))
         
         # Executar o loop
         try:

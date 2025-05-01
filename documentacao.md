@@ -1,123 +1,160 @@
 # Sistema de Memória Contínua e Reflexão Autônoma
 
 ## Visão Geral
+O Sistema de Memória Contínua e Reflexão Autônoma é uma aplicação que implementa um mecanismo de armazenamento e processamento de memórias com capacidade de reflexão autônoma. O sistema é composto por dois componentes principais: a Persona (gerenciadora de memórias) e a Alma (processadora de reflexões).
 
-O Sistema de Memória Contínua e Reflexão Autônoma é uma plataforma avançada de inteligência artificial projetada para criar um sistema cognitivo com capacidade de memória persistente, reflexão interna e aprendizado contínuo. O sistema implementa um paradigma de aprendizado de máquina ao longo da vida (lifelong learning), permitindo que evolua constantemente através de interações e experiências.
+## Arquitetura
 
-## Arquitetura do Sistema
+### Componentes Principais
 
-O sistema é dividido em dois módulos principais:
+#### 1. Persona (PersonaSimples)
+- **Responsabilidade**: Gerenciamento de memórias
+- **Funcionalidades**:
+  - Armazenamento de memórias
+  - Listagem de memórias
+  - Busca de memórias
+  - Persistência de dados em JSON
 
-1. **Persona**: Responsável por receber informações do ambiente externo, armazená-las, processá-las e sintetizá-las. Funciona como a interface consciente do sistema.
+#### 2. Alma (AlmaSimples)
+- **Responsabilidade**: Processamento e reflexão
+- **Funcionalidades**:
+  - Ciclo de reflexão
+  - Ciclo contínuo de reflexão
+  - Geração de insights
+  - Processamento de memórias não processadas
 
-2. **Alma**: Implementa a parte "subconsciente" do sistema, realizando processos internos de reflexão, metacognição e análise das informações armazenadas. Trabalha continuamente em segundo plano para refinar e evoluir o conhecimento.
+### API REST
 
-## Fases Implementadas
+#### Endpoints Disponíveis
 
-### Fase 1: Memória e Armazenamento
-- Sistema de armazenamento persistente de informações
-- Processamento de entrada de dados
-- Mecanismos básicos de recuperação de informações
+1. **Status do Sistema**
+   - `GET /`
+   - Retorna o status do sistema e informações básicas
 
-### Fase 2: Reflexão e Metacognição
-- Capacidade de analisar internamente as próprias memórias
-- Geração de sínteses e conexões entre informações
-- Avaliação da qualidade das memórias armazenadas
+2. **Gerenciamento de Memórias**
+   - `GET /api/memorias`
+   - `POST /api/memorias`
+   - `GET /api/memorias/buscar`
 
-### Fase 3: Sistema Multi-agentes
-Implementação de diferentes agentes especializados:
-- Agente Emocional: Adiciona contexto emocional às memórias
-- Agente de Consistência: Detecta e resolve contradições
-- Agente de Padrões: Identifica padrões recorrentes nas memórias
+3. **Reflexão**
+   - `POST /api/reflexao`
+   - `GET /api/status`
 
-### Fase 4: Ciclo de Pensamento Contínuo e Aprendizado Autônomo
-- Mecanismos para aprendizado contínuo sem supervisão
-- Otimização automática dos processos de aprendizado
-- Transferência de conhecimento entre tarefas
+## Comandos Disponíveis
 
-### Fase 5: Adaptação e Experimentação Autônoma
-- Capacidade de adaptação a novos ambientes e tarefas
-- Experimentação autônoma com novos métodos de aprendizado
-- Auto-avaliação e ajuste de estratégias
+### Interface de Comandos
+- `ajuda`: Lista todos os comandos disponíveis
+- `armazenar [mensagem]`: Armazena uma nova memória
+- `listar [n]`: Lista as últimas n memórias
+- `buscar [termo]`: Busca memórias contendo o termo
+- `refletir`: Executa um ciclo de reflexão
+- `sair`: Encerra o programa
 
-## Tecnologias Utilizadas
+## Estrutura de Dados
 
-- **Python**: Linguagem principal de programação
-- **Asyncio**: Para processos assíncronos de reflexão e pensamento
-- **Análise Semântica**: Implementação opcional através de módulos NLP avançados
-- **Processamento de Linguagem Natural**: Para extração de entidades, análise de sentimento e palavras-chave
+### Memória
+```json
+{
+    "id": 1,
+    "conteudo": "texto da memória",
+    "timestamp": "2025-04-30T21:26:01.962",
+    "processada": false
+}
+```
 
-## Recursos Avançados
+### Insight
+```json
+{
+    "id": 1,
+    "descricao": "descrição do insight",
+    "timestamp": "2025-04-30T21:26:01.962"
+}
+```
 
-### Análise Semântica
-O sistema utiliza técnicas avançadas de NLP (quando disponíveis) para:
-- Calcular similaridade semântica entre memórias
-- Extrair entidades e conceitos relevantes
-- Analisar sentimentos e emoções em textos
-- Detectar contradições entre memórias
+## Configuração do Ambiente
 
-### Aprendizado Adaptativo
-O sistema implementa aprendizado adaptativo que permite:
-- Identificar tendências no próprio processo de aprendizado
-- Intervir quando há declínio de qualidade
-- Estimular diversidade de temas
-- Gerenciar experimentos de aprendizado automaticamente
+### Requisitos
+- Python 3.8+
+- Flask
+- Requests (para testes)
 
-### Ciclos de Reflexão Autônomos
-O sistema mantém ciclos contínuos de:
-- Reflexão sobre memórias armazenadas
-- Metacognição para avaliar a qualidade do aprendizado
-- Ajuste dos pesos de diferentes agentes com base na eficácia
-
-## Casos de Uso
-
-O sistema pode ser aplicado em diversos cenários, incluindo:
-- Assistentes virtuais com memória persistente
-- Sistemas de recomendação que evoluem com o tempo
-- Análise contínua de dados e identificação de padrões
-- Pesquisa e exploração autônoma de conhecimento
-
-## Interação com o Sistema
-
-O sistema oferece uma interface de linha de comando com diversos comandos para interação:
-- Armazenamento e busca de memórias
-- Execução manual de ciclos de reflexão
-- Ativação de diferentes agentes
-- Análise semântica de textos
-- Visualização de estatísticas de aprendizado
-
-## Requisitos do Sistema
-
-- Python 3.7+
-- Dependências específicas:
-  - requests==2.31.0: Para requisições HTTP
-  - python-dotenv==1.0.1: Para gerenciamento de variáveis de ambiente
-  - spacy==3.7.2: Framework de processamento de linguagem natural
-  - scikit-learn==1.3.2: Biblioteca de aprendizado de máquina
-  - nltk==3.8.1: Natural Language Toolkit para processamento de linguagem
-  - sentence-transformers==2.2.2: Para geração de embeddings de sentenças
-- Espaço de armazenamento para memórias persistentes
+### Diretórios
+- `data/`: Armazena as memórias em JSON
+- `logs/`: Armazena logs do sistema
 
 ### Instalação
-
-Para instalar as dependências necessárias:
-
 ```bash
-pip install -r requirements.txt
+pip install flask requests
 ```
 
-Para funcionalidades avançadas de NLP, é necessário baixar modelos adicionais:
+## Execução
 
+### Iniciar o Servidor
 ```bash
-python -m spacy download pt_core_news_md
-python -m nltk.downloader punkt wordnet stopwords vader_lexicon
+python app.py
 ```
 
-## Futuras Direções
+### Executar Testes
+```bash
+python test_functions.py
+```
 
-O desenvolvimento futuro do sistema visa aprimorar:
-- Capacidades de raciocínio abstrato
-- Aprendizado contínuo mais eficiente
-- Expansão dos agentes especializados
-- Integração com modelos de fundação e LLMs
-- Interoperabilidade com outros sistemas de IA
+## Logs e Monitoramento
+
+### Níveis de Log
+- INFO: Operações normais
+- WARNING: Avisos importantes
+- ERROR: Erros críticos
+
+### Arquivos de Log
+- `api.log`: Logs da API
+- `sistema.log`: Logs do sistema
+
+## Ciclos de Processamento
+
+### Ciclo de Reflexão
+1. Identifica memórias não processadas
+2. Processa cada memória
+3. Gera insights quando necessário
+4. Atualiza o estado das memórias
+
+### Ciclo Contínuo
+- Executa ciclos de reflexão em intervalos regulares
+- Intervalo padrão: 60 segundos
+- Pode ser ajustado via parâmetro
+
+## Segurança
+
+### Considerações
+- Servidor de desenvolvimento não deve ser usado em produção
+- Implementar autenticação para endpoints sensíveis
+- Validar entrada de dados
+- Sanitizar saída de dados
+
+## Limitações Atuais
+
+1. **Persistência**
+   - Armazenamento simples em JSON
+   - Sem backup automático
+
+2. **Processamento**
+   - Reflexão básica
+   - Sem análise semântica avançada
+
+3. **Escalabilidade**
+   - Processamento síncrono
+   - Sem distribuição de carga
+
+## Próximos Passos
+
+1. **Melhorias Planejadas**
+   - Implementar banco de dados
+   - Adicionar análise semântica
+   - Implementar autenticação
+   - Adicionar backup automático
+
+2. **Recursos Futuros**
+   - Interface web
+   - API GraphQL
+   - Processamento distribuído
+   - Análise de sentimentos
