@@ -11,6 +11,7 @@ import random
 import logging
 from datetime import datetime
 import asyncio
+from typing import Dict, Any
 
 # Importa o módulo de análise semântica avançada
 try:
@@ -484,4 +485,23 @@ class Memoria:
                 if len(resultados) >= limite:
                     break
         
-        return resultados 
+        return resultados
+    
+    def status(self) -> Dict[str, Any]:
+        """Retorna o status atual do sistema de memória."""
+        try:
+            dados = self._carregar_memorias()
+            return {
+                'total_memorias': len(dados['memorias']),
+                'ultima_atualizacao': dados['meta'].get('ultima_atualizacao', 'Nunca'),
+                'versao': dados['meta'].get('versao', '1.0'),
+                'analise_semantica_ativa': self.analise_semantica_ativa
+            }
+        except Exception as e:
+            logger.error(f"Erro ao obter status da memória: {e}")
+            return {
+                'total_memorias': 0,
+                'ultima_atualizacao': 'Erro',
+                'versao': '1.0',
+                'analise_semantica_ativa': False
+            } 

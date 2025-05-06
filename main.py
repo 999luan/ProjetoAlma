@@ -20,14 +20,18 @@ import argparse
 import json
 from datetime import datetime
 from pathlib import Path
+import sys
+from rich.console import Console
+from rich.panel import Panel
 
 # Importação dos módulos do sistema
 from persona.persona import Persona
-from alma.controlador_alma import Alma
+from core.alma import Alma
 from core.learning import GerenciadorAprendizado
 from core.adaptive_learning import AprendizadoAdaptativo
 from persona.memoria import Memoria
 from persona.processador_pensamento import ProcessadorPensamento
+from core.chat_interface import ChatInterface
 
 # Inicialização condicional do módulo de análise semântica
 MODULO_SEMANTICO_DISPONIVEL = False
@@ -37,42 +41,18 @@ try:
 except ImportError:
     print("Aviso: Módulo de análise semântica não disponível. Algumas funcionalidades estarão limitadas.")
 
-# Configuração de logging
-def setup_logging():
-    """Configura o sistema de logging com handlers para arquivo e console."""
-    # Cria diretório de logs se não existir
-    os.makedirs('logs', exist_ok=True)
-    
-    # Configuração do formato de log
-    log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    date_format = '%Y-%m-%d %H:%M:%S'
-    
-    # Configuração do handler para arquivo
-    file_handler = logging.FileHandler(
-        f"logs/sistema_{datetime.now().strftime('%Y%m%d')}.log",
-        encoding='utf-8'
-    )
-    file_handler.setFormatter(logging.Formatter(log_format, date_format))
-    
-    # Configuração do handler para console
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(logging.Formatter(log_format, date_format))
-    
-    # Configuração do logger raiz
-    root_logger = logging.getLogger()
-    root_logger.setLevel(logging.INFO)
-    root_logger.addHandler(file_handler)
-    root_logger.addHandler(console_handler)
-    
-    # Configuração específica para cada módulo
-    modules = ['core.alma', 'core.persona', 'core.learning', 'core.adaptive_learning']
-    for module in modules:
-        module_logger = logging.getLogger(module)
-        module_logger.setLevel(logging.INFO)
-    
-    return logging.getLogger(__name__)
+# Configuração do logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler('alma.log')
+    ]
+)
 
-logger = setup_logging()
+logger = logging.getLogger(__name__)
+console = Console()
 
 async def setup_environment():
     """Configura o ambiente de execução, garantindo que diretórios necessários existam."""
@@ -330,143 +310,37 @@ async def processar_comandos(comando, persona, alma, gerenciador_aprendizado=Non
         return "Comando não reconhecido. Digite 'ajuda' para ver os comandos disponíveis."
 
 async def main_async():
-    """Função principal do sistema, executada de forma assíncrona."""
-    parser = argparse.ArgumentParser(description='Sistema de Memória Contínua e Reflexão Autônoma')
-    parser.add_argument('--noreflexao', action='store_true', help='Desabilita o ciclo de reflexão automático')
-    parser.add_argument('--noaprendizado', action='store_true', help='Desabilita o ciclo de aprendizado automático')
-    parser.add_argument('--noadaptacao', action='store_true', help='Desabilita o ciclo de adaptação automático')
-    parser.add_argument('--nosemantica', action='store_true', help='Desabilita o módulo de análise semântica avançada')
-    parser.add_argument('--reflexao-intervalo', type=int, default=60, help='Intervalo entre ciclos de reflexão em segundos')
-    parser.add_argument('--aprendizado-intervalo', type=int, default=300, help='Intervalo entre ciclos de aprendizado em segundos')
-    parser.add_argument('--adaptacao-intervalo', type=int, default=600, help='Intervalo entre ciclos de adaptação em segundos')
-    parser.add_argument('--modelo-spacy', type=str, default='pt_core_news_md', help='Modelo spaCy a ser utilizado para análise semântica')
-    
-    args = parser.parse_args()
-    
-    print("""
-╔════════════════════════════════════════════════════════════════════════════╗
-║                        SISTEMA ALMA - INICIALIZAÇÃO                        ║
-╠════════════════════════════════════════════════════════════════════════════╣
-    """)
-    
-    logger.info("Iniciando o sistema...")
-    
-    # Configuração inicial do ambiente
-    await setup_environment()
-    print("║ ✓ Ambiente configurado com sucesso")
-    
-    # Inicialização dos componentes do sistema
-    persona = Persona()
-    alma = Alma(persona)
-    print("║ ✓ Componentes principais inicializados")
-    
-    # Inicialização do gerenciador de aprendizado (Fase 4)
-    gerenciador_aprendizado = GerenciadorAprendizado(persona, alma)
-    alma.configurar_gerenciador_aprendizado(gerenciador_aprendizado)
-    print("║ ✓ Sistema de aprendizado configurado")
-    
-    # Inicialização do sistema adaptativo (Fase 5)
-    adaptativo = AprendizadoAdaptativo(persona, alma, gerenciador_aprendizado)
-    adaptativo.carregar_estado_aprendizado()
-    print("║ ✓ Sistema adaptativo inicializado")
-    
-    # Inicialização do módulo semântico avançado
-    if MODULO_SEMANTICO_DISPONIVEL and not args.nosemantica:
-        logger.info(f"Inicializando módulo de análise semântica avançada (modelo: {args.modelo_spacy})...")
-        analisador_semantico.caminho_modelo = args.modelo_spacy
-        asyncio.create_task(analisador_semantico.inicializar_recursos())
-        print("║ ✓ Módulo de análise semântica inicializado")
-    else:
-        print("║ ⚠ Módulo de análise semântica desabilitado")
-    
-    # Iniciar tarefas assíncronas
-    tarefas = []
-    
-    # Tarefa para o ciclo de reflexão
-    if not args.noreflexao:
-        logger.info(f"Iniciando ciclo de reflexão (intervalo: {args.reflexao_intervalo}s)")
-        tarefa_reflexao = asyncio.create_task(alma.ciclo_reflexao_continuo(intervalo=args.reflexao_intervalo))
-        tarefas.append(tarefa_reflexao)
-        print(f"║ ✓ Ciclo de reflexão iniciado (intervalo: {args.reflexao_intervalo}s)")
-    
-    # Tarefa para o ciclo de aprendizado
-    if not args.noaprendizado:
-        logger.info(f"Iniciando ciclo de aprendizado (intervalo: {args.aprendizado_intervalo}s)")
-        tarefa_aprendizado = asyncio.create_task(gerenciador_aprendizado.ciclo_aprendizado_continuo(intervalo=args.aprendizado_intervalo))
-        tarefas.append(tarefa_aprendizado)
-        print(f"║ ✓ Ciclo de aprendizado iniciado (intervalo: {args.aprendizado_intervalo}s)")
-    
-    # Tarefa para o ciclo adaptativo
-    if not args.noadaptacao:
-        logger.info(f"Iniciando ciclo adaptativo (intervalo: {args.adaptacao_intervalo}s)")
-        tarefa_adaptacao = asyncio.create_task(adaptativo.iniciar_ciclo_adaptativo(intervalo=args.adaptacao_intervalo))
-        tarefas.append(tarefa_adaptacao)
-        print(f"║ ✓ Ciclo adaptativo iniciado (intervalo: {args.adaptacao_intervalo}s)")
-    
-    print("""
-╠════════════════════════════════════════════════════════════════════════════╣
-║                        SISTEMA PRONTO PARA USO                             ║
-║ Digite 'ajuda' para ver os comandos disponíveis ou 'sair' para encerrar.   ║
-╚════════════════════════════════════════════════════════════════════════════╝
-    """)
-    
-    # Loop principal de interação com o usuário
-    while True:
-        try:
-            comando = input("\n> ")
-            resposta = await processar_comandos(comando, persona, alma, gerenciador_aprendizado, adaptativo)
-            
-            if resposta == "sair":
-                print("""
-╔════════════════════════════════════════════════════════════════════════════╗
-║                        ENCERRANDO O SISTEMA                                ║
-╠════════════════════════════════════════════════════════════════════════════╣
-                """)
-                logger.info("Encerrando o sistema...")
-                break
-            
-            print(resposta)
-        except Exception as e:
-            logger.error(f"Erro ao processar comando: {e}")
-            print(f"""
-╔════════════════════════════════════════════════════════════════════════════╗
-║                               ERRO                                         ║
-╠════════════════════════════════════════════════════════════════════════════╣
-║ {str(e)}
-╚════════════════════════════════════════════════════════════════════════════╝
-            """)
-    
-    # Cancela as tarefas em andamento
-    for tarefa in tarefas:
-        tarefa.cancel()
-    
-    # Aguarda a conclusão das tarefas
-    for tarefa in tarefas:
-        try:
-            await tarefa
-        except asyncio.CancelledError:
-            pass
-    
-    print("""
-╔════════════════════════════════════════════════════════════════════════════╗
-║                        SISTEMA ENCERRADO                                   ║
-╚════════════════════════════════════════════════════════════════════════════╝
-    """)
-    logger.info("Sistema encerrado.")
+    """Função principal assíncrona."""
+    try:
+        # Inicializa o sistema
+        logger.info("Iniciando o sistema...")
+        await setup_environment()
+        
+        # Cria instâncias principais
+        alma = Alma()
+        chat = ChatInterface(alma)
+        
+        # Inicia o ciclo de reflexão
+        await alma.iniciar_ciclo()
+        
+        # Inicia a interface de chat
+        await chat.iniciar_chat()
+        
+    except Exception as e:
+        logger.error(f"Erro fatal no sistema: {str(e)}")
+        console.print(f"[red]Erro: {str(e)}[/red]")
+    finally:
+        # Encerra o ciclo de reflexão
+        await alma.encerrar_ciclo()
+        console.print("[green]Sistema finalizado[/green]")
 
 def main():
     """Ponto de entrada principal do programa."""
-    print("Iniciando o sistema...")  # Debug print
     try:
-        print("Configurando logging...")  # Debug print
-        logger = setup_logging()
-        print("Iniciando main_async()...")  # Debug print
         asyncio.run(main_async())
     except KeyboardInterrupt:
-        print("Sistema interrompido pelo usuário.")  # Debug print
-        logger.info("Sistema interrompido pelo usuário.")
+        print("\nSistema interrompido pelo usuário.")
     except Exception as e:
-        print(f"Erro não tratado: {e}")  # Debug print
         logger.error(f"Erro não tratado: {e}", exc_info=True)
 
 if __name__ == "__main__":

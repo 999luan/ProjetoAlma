@@ -1,16 +1,66 @@
 """
-Módulo Persona - Implementa a interface básica do sistema Persona.
+Módulo Persona - Implementa a personalidade e comportamento do sistema.
 """
 
+import logging
+from typing import Dict, Any, List
+from datetime import datetime
 from persona.memoria import Memoria
 from persona.processador_pensamento import ProcessadorPensamento
 
 class Persona:
     def __init__(self):
-        """Inicializa o sistema Persona."""
+        """Inicializa a persona do sistema."""
         self.memoria = Memoria()
-        self.processador = ProcessadorPensamento(self.memoria)
-        
+        self.processador_pensamento = ProcessadorPensamento(self.memoria)
+        self.logger = logging.getLogger(__name__)
+        self.ultima_interacao = None
+        self.historico_interacoes = []
+
+    async def receber_pensamento(self, pensamento: Dict[str, Any]) -> Dict[str, Any]:
+        """Recebe e processa um pensamento."""
+        try:
+            if not isinstance(pensamento, dict):
+                raise ValueError("Pensamento deve ser um dicionário")
+
+            self.ultima_interacao = datetime.now()
+            
+            # Processa o pensamento
+            resultado = await self.processador_pensamento.processar_pensamento(pensamento)
+            
+            # Registra a interação
+            self.historico_interacoes.append({
+                'timestamp': self.ultima_interacao,
+                'pensamento': pensamento,
+                'resultado': resultado
+            })
+
+            return resultado
+
+        except Exception as e:
+            self.logger.error(f"Erro ao receber pensamento: {str(e)}")
+            return {
+                'status': 'erro',
+                'erro': str(e),
+                'timestamp': datetime.now()
+            }
+
+    def obter_historico(self, limite: int = 10) -> List[Dict[str, Any]]:
+        """Retorna o histórico de interações."""
+        return self.historico_interacoes[-limite:]
+
+    def status(self) -> Dict[str, Any]:
+        """Retorna o status atual da persona."""
+        return {
+            'ultima_interacao': self.ultima_interacao,
+            'total_interacoes': len(self.historico_interacoes),
+            'memoria': self.memoria.status(),
+            'processador': {
+                'ultimo_processamento': self.processador_pensamento.ultimo_processamento,
+                'total_processados': len(self.processador_pensamento.historico_processamento)
+            }
+        }
+
     def _carregar_memorias(self):
         """
         Carrega as memórias do sistema.

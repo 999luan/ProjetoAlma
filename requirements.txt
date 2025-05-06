@@ -1,6 +1,22 @@
-python-dotenv==1.0.1
+# Dependências principais
+asyncio>=3.4.3
+python-dateutil>=2.8.2
+typing-extensions>=4.0.0
+
+# Processamento de linguagem natural (opcional)
+spacy>=3.5.0
+# Descomente a linha abaixo para instalar o modelo em português
+# python -m spacy download pt_core_news_md
+
+# Logging e monitoramento
+colorlog>=6.7.0
+rich>=12.0.0
+
+# Utilitários
+python-dotenv>=0.19.0
+tqdm>=4.62.0
+
 requests==2.31.0
-spacy==3.7.2
 scikit-learn==1.4.1
 nltk==3.8.1
 sentence-transformers==2.5.1 

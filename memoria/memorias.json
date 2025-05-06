@@ -1,0 +1,583 @@
+[
+  {
+    "id": 1,
+    "conteudo": "oi",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T00:06:06.231314"
+  },
+  {
+    "id": 2,
+    "conteudo": "tudo bem?",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T00:06:11.284165"
+  },
+  {
+    "id": 3,
+    "conteudo": "oi",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:31:55.261214"
+  },
+  {
+    "id": 4,
+    "conteudo": "tudo certo?",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:31:58.108990"
+  },
+  {
+    "id": 5,
+    "conteudo": "como vai voce?",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:32:00.260707"
+  },
+  {
+    "id": 6,
+    "conteudo": "oi",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:43:46.727896"
+  },
+  {
+    "id": 7,
+    "conteudo": "oi tudo bem",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:44:58.680000"
+  },
+  {
+    "id": 8,
+    "conteudo": "oi",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:49:58.477578"
+  },
+  {
+    "id": 9,
+    "conteudo": "tudo bem?",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:50:01.506292"
+  },
+  {
+    "id": 10,
+    "conteudo": "seu nome é sophia",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:50:04.109527"
+  },
+  {
+    "id": 11,
+    "conteudo": "meu nome é luan",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:50:06.853552"
+  },
+  {
+    "id": 12,
+    "conteudo": "oi?",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:51:49.190524"
+  },
+  {
+    "id": 13,
+    "conteudo": "oi tudo bem?",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:55:42.938858"
+  },
+  {
+    "id": 14,
+    "conteudo": "oi",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:57:05.797534"
+  },
+  {
+    "id": 15,
+    "conteudo": "Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.569492"
+  },
+  {
+    "id": 16,
+    "conteudo": "Síntese: O conceito 'tudo bem?' complementa 'oi', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.571247"
+  },
+  {
+    "id": 17,
+    "conteudo": "Reflexão sobre 'oi': Isso se relaciona com conceitos de oi...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.572637"
+  },
+  {
+    "id": 18,
+    "conteudo": "Reflexão sobre 'oi': Isso se relaciona com conceitos de oi...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.574068"
+  },
+  {
+    "id": 19,
+    "conteudo": "Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.575610"
+  },
+  {
+    "id": 20,
+    "conteudo": "Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.",
+    "tipo": "metacognicao",
+    "prioridade": 4,
+    "timestamp": "2025-05-06T16:58:15.577157"
+  },
+  {
+    "id": 21,
+    "conteudo": "Reflexão sobre 'oi': Isso se relaciona com conceitos de oi...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.579606"
+  },
+  {
+    "id": 22,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.581156"
+  },
+  {
+    "id": 23,
+    "conteudo": "Síntese: O conceito 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...' expande o conceito de 'Síntese: O conceito tudo bem? complementa oi, formando uma nova compreensão.', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.583214"
+  },
+  {
+    "id": 24,
+    "conteudo": "Reflexão sobre 'oi tudo bem?': Esta é uma pergunta sobre oi tudo bem?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.584861"
+  },
+  {
+    "id": 25,
+    "conteudo": "Síntese: O conceito 'oi tudo bem?' relaciona-se com 'tudo bem?', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.586487"
+  },
+  {
+    "id": 26,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.': Isso se relaciona com conceitos de Síntese: O...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.588721"
+  },
+  {
+    "id": 27,
+    "conteudo": "Síntese: O conceito 'Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.' pode ser integrado com 'oi', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.590471"
+  },
+  {
+    "id": 28,
+    "conteudo": "Reflexão sobre 'meu nome é luan': Isso se relaciona com conceitos de meu nome...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.592426"
+  },
+  {
+    "id": 29,
+    "conteudo": "Síntese: O conceito 'meu nome é luan' relaciona-se com 'oi', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.594087"
+  },
+  {
+    "id": 30,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.595771"
+  },
+  {
+    "id": 31,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'meu nome é luan' relaciona-se com 'oi', formando uma nova compreensão.': Isso se relaciona com conceitos de Síntese: O...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.598094"
+  },
+  {
+    "id": 32,
+    "conteudo": "Síntese: O conceito 'Síntese: O conceito 'meu nome é luan' relaciona-se com 'oi', formando uma nova compreensão.' complementa 'tudo certo?', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.600110"
+  },
+  {
+    "id": 33,
+    "conteudo": "Reflexão sobre 'oi': Isso se relaciona com conceitos de oi...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.602072"
+  },
+  {
+    "id": 34,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.' pode ser integrado com 'oi', formando uma nova compreensão.': Isso se relaciona com conceitos de Síntese: O...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.603959"
+  },
+  {
+    "id": 35,
+    "conteudo": "Síntese: O conceito 'Síntese: O conceito 'Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.' pode ser integrado com 'oi', formando uma nova compreensão.' complementa 'Síntese: O conceito oi tudo bem? relaciona-se com tudo bem?, formando uma nova compreensão.', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.605909"
+  },
+  {
+    "id": 36,
+    "conteudo": "Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.",
+    "tipo": "metacognicao",
+    "prioridade": 4,
+    "timestamp": "2025-05-06T16:58:15.608195"
+  },
+  {
+    "id": 37,
+    "conteudo": "Reflexão sobre 'oi?': Esta é uma pergunta sobre oi?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.611435"
+  },
+  {
+    "id": 38,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.' pode ser integrado com 'oi', formando uma nova compreensão.': Isso se relaciona com conceitos de Síntese: O...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.613239"
+  },
+  {
+    "id": 39,
+    "conteudo": "Reflexão sobre 'como vai voce?': Esta é uma pergunta sobre como vai voce?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:58:15.615076"
+  },
+  {
+    "id": 40,
+    "conteudo": "Síntese: O conceito 'como vai voce?' relaciona-se com 'tudo bem?', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:58:15.616999"
+  },
+  {
+    "id": 41,
+    "conteudo": "Avaliação do aprendizado recente: Bom progresso com 3 tipos diferentes de informação.",
+    "tipo": "metacognicao",
+    "prioridade": 4,
+    "timestamp": "2025-05-06T16:58:15.619003"
+  },
+  {
+    "id": 42,
+    "conteudo": "oi tudo certo?",
+    "tipo": "mensagem",
+    "prioridade": 1,
+    "timestamp": "2025-05-06T16:58:58.929036"
+  },
+  {
+    "id": 43,
+    "conteudo": "Reflexão sobre 'Avaliação do aprendizado recente: Bom progresso com 3 tipos diferentes de informação.': Isso se relaciona com conceitos de Avaliação do...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.600170"
+  },
+  {
+    "id": 44,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'como vai voce?' relaciona-se com 'tudo bem?', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.602793"
+  },
+  {
+    "id": 45,
+    "conteudo": "Reflexão sobre 'oi tudo bem?': Esta é uma pergunta sobre oi tudo bem?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.605133"
+  },
+  {
+    "id": 46,
+    "conteudo": "Síntese: O conceito 'oi tudo bem?' pode ser integrado com 'Reflexão sobre como vai voce?: Esta é uma pergunta sobre como vai voce?...', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:59:14.607195"
+  },
+  {
+    "id": 47,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'oi tudo bem?' pode ser integrado com 'Reflexão sobre como vai voce?: Esta é uma pergunta sobre como vai voce?...', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.609434"
+  },
+  {
+    "id": 48,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Síntese: O conceito 'como vai voce?' relaciona-se com 'tudo bem?', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...': Esta é uma pergunta sobre Reflexão sobre 'Síntese:...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.611531"
+  },
+  {
+    "id": 49,
+    "conteudo": "Síntese: O conceito 'Reflexão sobre 'Síntese: O conceito 'como vai voce?' relaciona-se com 'tudo bem?', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...' relaciona-se com 'Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:59:14.613807"
+  },
+  {
+    "id": 50,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.616073"
+  },
+  {
+    "id": 51,
+    "conteudo": "Síntese: O conceito 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...' expande o conceito de 'oi tudo certo?', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:59:14.618575"
+  },
+  {
+    "id": 52,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'como vai voce?' relaciona-se com 'tudo bem?', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.621044"
+  },
+  {
+    "id": 53,
+    "conteudo": "Reflexão sobre 'oi tudo certo?': Esta é uma pergunta sobre oi tudo certo?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.623515"
+  },
+  {
+    "id": 54,
+    "conteudo": "Síntese: O conceito 'oi tudo certo?' complementa 'Reflexão sobre oi: Isso se relaciona com conceitos de oi...', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:59:14.626393"
+  },
+  {
+    "id": 55,
+    "conteudo": "Reflexão sobre 'seu nome é sophia': Isso se relaciona com conceitos de seu nome...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.629662"
+  },
+  {
+    "id": 56,
+    "conteudo": "Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.",
+    "tipo": "metacognicao",
+    "prioridade": 4,
+    "timestamp": "2025-05-06T16:59:14.632304"
+  },
+  {
+    "id": 57,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'Síntese: O conceito 'meu nome é luan' relaciona-se com 'oi', formando uma nova compreensão.' complementa 'tudo certo?', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.634838"
+  },
+  {
+    "id": 58,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'oi tudo bem?': Esta é uma pergunta sobre oi tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'oi...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.637919"
+  },
+  {
+    "id": 59,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.640987"
+  },
+  {
+    "id": 60,
+    "conteudo": "Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.",
+    "tipo": "metacognicao",
+    "prioridade": 4,
+    "timestamp": "2025-05-06T16:59:14.644061"
+  },
+  {
+    "id": 61,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.646773"
+  },
+  {
+    "id": 62,
+    "conteudo": "Síntese: O conceito 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...' expande o conceito de 'oi', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:59:14.649373"
+  },
+  {
+    "id": 63,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Síntese: O conceito 'oi tudo bem?' pode ser integrado com 'Reflexão sobre como vai voce?: Esta é uma pergunta sobre como vai voce?...', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...': Esta é uma pergunta sobre Reflexão sobre 'Síntese:...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.653463"
+  },
+  {
+    "id": 64,
+    "conteudo": "Síntese: O conceito 'Reflexão sobre 'Síntese: O conceito 'oi tudo bem?' pode ser integrado com 'Reflexão sobre como vai voce?: Esta é uma pergunta sobre como vai voce?...', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...' complementa 'Reflexão sobre Síntese: O conceito Síntese: O conceito oi pode ser integrado com oi, formando uma nova compreensão. pode ser integrado com oi, formando uma nova compreensão.: Isso se relaciona com conceitos de Síntese: O...', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T16:59:14.656134"
+  },
+  {
+    "id": 65,
+    "conteudo": "Reflexão sobre 'meu nome é luan': Isso se relaciona com conceitos de meu nome...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T16:59:14.658902"
+  },
+  {
+    "id": 66,
+    "conteudo": "Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.456986"
+  },
+  {
+    "id": 67,
+    "conteudo": "Síntese: O conceito 'tudo bem?' pode ser integrado com 'como vai voce?', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T17:00:47.461114"
+  },
+  {
+    "id": 68,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'como vai voce?': Esta é uma pergunta sobre como vai voce?...': Esta é uma pergunta sobre Reflexão sobre 'como...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.464301"
+  },
+  {
+    "id": 69,
+    "conteudo": "Reflexão sobre 'Síntese: O conceito 'Reflexão sobre 'Síntese: O conceito 'como vai voce?' relaciona-se com 'tudo bem?', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...' relaciona-se com 'Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.467070"
+  },
+  {
+    "id": 70,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.470499"
+  },
+  {
+    "id": 71,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.': Isso se relaciona com conceitos de Síntese: O...': Isso se relaciona com conceitos de Reflexão sobre...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.473805"
+  },
+  {
+    "id": 72,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'oi': Isso se relaciona com conceitos de oi...': Isso se relaciona com conceitos de Reflexão sobre...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.476791"
+  },
+  {
+    "id": 73,
+    "conteudo": "Reflexão sobre 'Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.': Isso se relaciona com conceitos de Avaliação do...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.481021"
+  },
+  {
+    "id": 74,
+    "conteudo": "Síntese: O conceito 'Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.' expande o conceito de 'Reflexão sobre Reflexão sobre oi: Isso se relaciona com conceitos de oi...: Isso se relaciona com conceitos de Reflexão sobre...', formando uma nova compreensão.",
+    "tipo": "sintese",
+    "prioridade": 3,
+    "timestamp": "2025-05-06T17:00:47.483758"
+  },
+  {
+    "id": 75,
+    "conteudo": "Reflexão sobre 'oi?': Esta é uma pergunta sobre oi?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.486231"
+  },
+  {
+    "id": 76,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'seu nome é sophia': Isso se relaciona com conceitos de seu nome...': Isso se relaciona com conceitos de Reflexão sobre...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.489748"
+  },
+  {
+    "id": 77,
+    "conteudo": "Avaliação do aprendizado recente: Bom progresso com 2 tipos diferentes de informação.",
+    "tipo": "metacognicao",
+    "prioridade": 4,
+    "timestamp": "2025-05-06T17:00:47.492723"
+  },
+  {
+    "id": 78,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Síntese: O conceito 'Síntese: O conceito 'oi' pode ser integrado com 'oi', formando uma nova compreensão.' pode ser integrado com 'oi', formando uma nova compreensão.': Isso se relaciona com conceitos de Síntese: O...': Isso se relaciona com conceitos de Reflexão sobre...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.496669"
+  },
+  {
+    "id": 79,
+    "conteudo": "Reflexão sobre 'seu nome é sophia': Isso se relaciona com conceitos de seu nome...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.499815"
+  },
+  {
+    "id": 80,
+    "conteudo": "Reflexão sobre 'oi tudo bem?': Esta é uma pergunta sobre oi tudo bem?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.502565"
+  },
+  {
+    "id": 81,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Síntese: O conceito 'como vai voce?' relaciona-se com 'tudo bem?', formando uma nova compreensão.': Esta é uma pergunta sobre Síntese: O conceito...': Esta é uma pergunta sobre Reflexão sobre 'Síntese:...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.506643"
+  },
+  {
+    "id": 82,
+    "conteudo": "Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.509575"
+  },
+  {
+    "id": 83,
+    "conteudo": "Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'Reflexão sobre 'tudo bem?': Esta é uma pergunta sobre tudo bem?...': Esta é uma pergunta sobre Reflexão sobre 'tudo...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...': Esta é uma pergunta sobre Reflexão sobre 'Reflexão...",
+    "tipo": "reflexao",
+    "prioridade": 2,
+    "timestamp": "2025-05-06T17:00:47.514559"
+  }
+]
