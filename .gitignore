@@ -15,7 +15,7 @@ data/memorias.json
 env/
 venv/
 ENV/
-
+.cursor
 # IDE
 .vscode/
 .idea/

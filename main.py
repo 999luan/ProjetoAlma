@@ -22,17 +22,20 @@ from datetime import datetime
 from pathlib import Path
 
 # Importação dos módulos do sistema
-from core.persona import Persona
-from core.alma import Alma
+from persona.persona import Persona
+from alma.controlador_alma import Alma
 from core.learning import GerenciadorAprendizado
 from core.adaptive_learning import AprendizadoAdaptativo
+from persona.memoria import Memoria
+from persona.processador_pensamento import ProcessadorPensamento
 
 # Inicialização condicional do módulo de análise semântica
+MODULO_SEMANTICO_DISPONIVEL = False
 try:
     from core.nlp_enhancement import analisador_semantico
     MODULO_SEMANTICO_DISPONIVEL = True
 except ImportError:
-    MODULO_SEMANTICO_DISPONIVEL = False
+    print("Aviso: Módulo de análise semântica não disponível. Algumas funcionalidades estarão limitadas.")
 
 # Configuração de logging
 def setup_logging():
@@ -453,11 +456,17 @@ async def main_async():
 
 def main():
     """Ponto de entrada principal do programa."""
+    print("Iniciando o sistema...")  # Debug print
     try:
+        print("Configurando logging...")  # Debug print
+        logger = setup_logging()
+        print("Iniciando main_async()...")  # Debug print
         asyncio.run(main_async())
     except KeyboardInterrupt:
+        print("Sistema interrompido pelo usuário.")  # Debug print
         logger.info("Sistema interrompido pelo usuário.")
     except Exception as e:
+        print(f"Erro não tratado: {e}")  # Debug print
         logger.error(f"Erro não tratado: {e}", exc_info=True)
 
 if __name__ == "__main__":
