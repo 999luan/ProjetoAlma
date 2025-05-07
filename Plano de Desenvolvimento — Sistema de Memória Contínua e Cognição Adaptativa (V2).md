@@ -1,18 +1,3 @@
-Perfeito. Vamos fazer a atualização agora, de forma organizada, completa e pensando na sua visão.
-
-Vou **refazer o projeto do início**, já:
-- Incluindo o funcionamento de aprendizado real e contínuo;
-- Melhorando o comportamento do módulo **Persona**;
-- Tornando o módulo **Alma** responsável por conduzir os ciclos de crescimento/refinamento;
-- Integrando o **fluxo de reflexão, comparação, síntese** e **metacognição** no sistema.
-
-Vou deixar o documento bem didático, servindo também como **guia de implementação** para que a IA que vá usar isso (ou você mesmo) **não se perca**.
-
----
-
-# 📄 NOVO DOCUMENTO DO PROJETO
-
----
 
 # Projeto: **Sistema de Memória Contínua e Reflexão Autônoma**
 
