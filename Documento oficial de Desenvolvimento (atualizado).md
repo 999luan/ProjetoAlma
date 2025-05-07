@@ -1,12 +1,4 @@
-Perfeito.  
-Vou criar uma **documentação super detalhada**, contendo:
 
-- 📜 Explicação de todas as **Fases**, desde a 1ª até a 5ª.
-- 🧱 **Padrão de Código** usado no projeto.
-- 🛠️ **Tecnologias e Bibliotecas** utilizadas.
-- 🧩 Instruções e explicações de como fazer **cada função** e **cada parte do código**.
-
----
 
 # 📚 DOCUMENTAÇÃO DETALHADA — Projeto "Memória Contínua"
 
